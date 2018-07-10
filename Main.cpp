@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <Main.hpp>
+#include <unistd.h>
 
 int main()
 {
@@ -78,6 +79,9 @@ int Game(sf::RenderWindow &window, sf::Font font)
   sf::Texture pac3;
   sf::Texture pac4;
   sf::Texture pac5;
+  sf::Text readyText("Get ready!", font, 80);
+  readyText.setFillColor(sf::Color::White);
+  readyText.setPosition(window.getSize().x/2-readyText.getLocalBounds().width/2, window.getSize().y-readyText.getLocalBounds().height*10);
   pac1.loadFromFile("Pac1.png");
   pac2.loadFromFile("Pac2.png");
   pac3.loadFromFile("Pac3.png");
@@ -102,10 +106,17 @@ int Game(sf::RenderWindow &window, sf::Font font)
 
   sf::Sprite mySprite;
   mySprite.setTexture(pac5);
+  mySprite.setTexture(pac1);
   mySprite.setOrigin(mySprite.getOrigin().x+mySprite.getLocalBounds().width/2, mySprite.getOrigin().y+mySprite.getLocalBounds().height/2);
-  mySprite.setRotation(180);
+  mySprite.setRotation(0);
+  mySprite.setPosition(window.getSize().x/2, window.getSize().y/2);
   window.setFramerateLimit(60);
-
+  window.clear(sf::Color::Black);
+  window.draw(mySprite);
+  window.draw(readyText);
+  window.display();
+  sleep(3);
+      
   while(window.isOpen())
     {
       if (counter == 2)
