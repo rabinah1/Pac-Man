@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/henry/Pac-Man/Main.cpp
+SFML/Graphics.hpp
+-
+iostream
+-
+vector
+-
+Main.hpp
+-
+unistd.h
+-
+
+Main.hpp
+SFML/Graphics.hpp
+-
+

@@ -6,6 +6,7 @@
 
 int main()
 {
+  int retValue = 0;
   sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Pac-Man", sf::Style::Fullscreen);
   sf::Event event;
   sf::Font font;
@@ -48,7 +49,12 @@ int main()
 	    case sf::Event::MouseButtonPressed:
 	      if (StartButton.getGlobalBounds().contains(mousePosF))
 		{
-		  Game(window, font);
+		  retValue = Game(window, font);
+		  if(retValue == 1)
+		    {
+		      window.close();
+		      break;
+		    }
 		}
 	      else if (ExitButton.getGlobalBounds().contains(mousePosF))
 		{
@@ -73,6 +79,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int speed = 4;
   int counter = 0;
   int index = 0;
+  int pause = 0;
   sf::Event event;
   sf::Texture pac1;
   sf::Texture pac2;
@@ -80,8 +87,14 @@ int Game(sf::RenderWindow &window, sf::Font font)
   sf::Texture pac4;
   sf::Texture pac5;
   sf::Text readyText("Get ready!", font, 80);
+  sf::Text menuButton("Menu", font, 80);
+  sf::Text exitButton("Exit", font, 80);
   readyText.setFillColor(sf::Color::White);
+  menuButton.setFillColor(sf::Color::White);
+  exitButton.setFillColor(sf::Color::White);
   readyText.setPosition(window.getSize().x/2-readyText.getLocalBounds().width/2, window.getSize().y-readyText.getLocalBounds().height*10);
+  menuButton.setPosition(window.getSize().x/2-menuButton.getLocalBounds().width/2, window.getSize().y-menuButton.getLocalBounds().height*6);
+  exitButton.setPosition(window.getSize().x/2-exitButton.getLocalBounds().width/2, window.getSize().y-exitButton.getLocalBounds().height*3);
   pac1.loadFromFile("Pac1.png");
   pac2.loadFromFile("Pac2.png");
   pac3.loadFromFile("Pac3.png");
@@ -119,6 +132,8 @@ int Game(sf::RenderWindow &window, sf::Font font)
       
   while(window.isOpen())
     {
+      sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+      sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
       if (counter == 2)
 	{
 	  counter = 0;
@@ -155,10 +170,60 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	  switch(event.type)
 	    {
 	    case sf::Event::KeyPressed:
-	      if(event.key.code == sf::Keyboard::Escape)
+	      if(event.key.code == sf::Keyboard::Escape) // The game is paused
 		{
-		  window.close();
-		  break;
+		  while(1)
+		    {
+		      sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+		      sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+		      if(menuButton.getGlobalBounds().contains(mousePosF))
+			{
+			  menuButton.setFillColor(sf::Color::Blue);
+			}
+		      else if(exitButton.getGlobalBounds().contains(mousePosF))
+			{
+			  exitButton.setFillColor(sf::Color::Blue);
+			}
+		      else
+			{
+			  menuButton.setFillColor(sf::Color::White);
+			  exitButton.setFillColor(sf::Color::White);
+			}
+		      while(window.pollEvent(event))
+			{
+			  switch(event.type)
+			    {
+			    case sf::Event::KeyPressed:
+			      if(event.key.code == sf::Keyboard::Escape)
+				{
+				  pause = 1;
+				  break;
+				}
+			    case sf::Event::MouseButtonPressed:
+			      if(menuButton.getGlobalBounds().contains(mousePosF))
+				{
+				  return 0;
+				}
+			      else if(exitButton.getGlobalBounds().contains(mousePosF))
+				{
+				  return 1;
+				}
+			    }
+			}
+		      window.clear(sf::Color::Black);
+		      window.draw(mySprite);
+		      window.draw(menuButton);
+		      window.draw(exitButton);
+		      window.display();
+		      if (pause == 1)
+			{
+			  pause = 0;
+			  break;
+			}
+		    }
+		  //return 0;
+		  //window.close();
+		  //break;
 		}
 	      else if(event.key.code == sf::Keyboard::Up)
 		{
