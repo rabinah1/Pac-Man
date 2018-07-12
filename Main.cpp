@@ -12,7 +12,6 @@ int main()
   sf::Event event;
   sf::Font font;
   font.loadFromFile("Ubuntu-B.ttf");
-
   sf::Text StartButton("Start Game", font, 100);
   sf::Text ExitButton("Exit", font, 100);
   sf::Text TitleText("Pac-Man", font, 200);
@@ -81,6 +80,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int counter = 0;
   int index = 0;
   int pause = 0;
+  int currentCont = 0;
   sf::Event event;
   sf::Texture pac1;
   sf::Texture pac2;
@@ -90,6 +90,15 @@ int Game(sf::RenderWindow &window, sf::Font font)
   sf::Text readyText("Get ready!", font, 80);
   sf::Text menuButton("Menu", font, 80);
   sf::Text exitButton("Exit", font, 80);
+  sf::RectangleShape rectangle;
+  rectangle.setSize(sf::Vector2f(100,50));
+  rectangle.setOutlineColor(sf::Color::Blue);
+  rectangle.setFillColor(sf::Color::Black);
+  rectangle.setOutlineThickness(5);
+  rectangle.setPosition(500,500);
+
+  sf::IntRect r1(rectangle.getPosition().x, rectangle.getPosition().y, rectangle.getGlobalBounds().width, rectangle.getGlobalBounds().height);
+  
   readyText.setFillColor(sf::Color::White);
   menuButton.setFillColor(sf::Color::White);
   exitButton.setFillColor(sf::Color::White);
@@ -123,9 +132,11 @@ int Game(sf::RenderWindow &window, sf::Font font)
   mySprite.setTexture(pac1);
   mySprite.setOrigin(mySprite.getOrigin().x+mySprite.getLocalBounds().width/2, mySprite.getOrigin().y+mySprite.getLocalBounds().height/2);
   mySprite.setRotation(0);
-  mySprite.setPosition(window.getSize().x/2, window.getSize().y/2);
+  mySprite.setPosition(window.getSize().x/2, window.getSize().y/2*1.5);
 
-  Player player1(0, 3, 0, len, textureVector, mySprite);
+  sf::IntRect r2(mySprite.getPosition().x-mySprite.getGlobalBounds().width/2, mySprite.getPosition().y-mySprite.getGlobalBounds().height/2, mySprite.getGlobalBounds().width, mySprite.getGlobalBounds().height);
+
+  Player player1(0, 3, 0, len, textureVector, mySprite, r2, 2);
   
   window.setFramerateLimit(60);
   window.clear(sf::Color::Black);
@@ -136,33 +147,66 @@ int Game(sf::RenderWindow &window, sf::Font font)
       
   while(window.isOpen())
     {
+      player1.updateRect();
+      sf::Vector2f spritePos = player1.getPos();
       sf::Vector2i mousePos = sf::Mouse::getPosition(window);
       sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-      if (counter == 2)
+      if(control == 0)
 	{
-	  counter = 0;
-	  player1.changeTexture();
+	  if (currentCont == 1)
+	    {
+	      player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x-10, player1.getSprite().getPosition().y));
+	    }
+	  else if (currentCont == 2)
+	    {
+	      player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x+10, player1.getSprite().getPosition().y));
+	    }
+	  else if (currentCont == 3)
+	    {
+	      player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x, player1.getSprite().getPosition().y+10));
+	    }
+	  else if (currentCont == 4)
+	    {
+	      player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x, player1.getSprite().getPosition().y-10));
+	    }
 	}
-      counter = counter + 1;
+      else
+	{
+	  if (counter == 2)
+	    {
+	      counter = 0;
+	      player1.changeTexture();
+	    }
+	  counter = counter + 1;
+	}
       if(control == 1)
 	{
+	  player1.setDir(1);
 	  player1.setRot(0);
 	  player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x+speed, player1.getSprite().getPosition().y));
 	}
       else if(control == 2)
 	{
+	  player1.setDir(2);
 	  player1.setRot(180);
 	  player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x-speed, player1.getSprite().getPosition().y));
 	}
       else if(control == 3)
 	{
+	  player1.setDir(3);
 	  player1.setRot(270);
 	  player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x, player1.getSprite().getPosition().y-speed));
 	}
       else if(control == 4)
 	{
+	  player1.setDir(4);
 	  player1.setRot(90);
 	  player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x, player1.getSprite().getPosition().y+speed));
+	}
+      if(r1.intersects(player1.getRect()))
+      	{
+	  currentCont = control;
+	  control = 0;
 	}
       while(window.pollEvent(event))
 	{
@@ -241,6 +285,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	}
       window.clear(sf::Color::Black);
       window.draw(player1.getSprite());
+      window.draw(rectangle);
       window.display();
     }
   return 0;
