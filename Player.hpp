@@ -7,7 +7,7 @@
 class Player
 {
  public:
-  Player(int points, int lives, int index, int len, std::vector<sf::Texture> textureVec, sf::Sprite playerSprite, sf::IntRect r2, int dir);
+  Player(int points, int lives, int index, int len, std::vector<sf::Texture> textureVec, sf::Sprite playerSprite, int dir);
   int getPoints();
   int getLives();
   sf::Sprite getSprite();
@@ -18,8 +18,6 @@ class Player
   void setRot(int num);
   void setPos(sf::Vector2f v1);
   sf::Vector2f getPos();
-  void updateRect();
-  sf::IntRect getRect();
   void setDir(int d);
   int getDir();
  private:
@@ -29,7 +27,6 @@ class Player
   int len;
   std::vector<sf::Texture> textureVec;
   sf::Sprite playerSprite;
-  sf::IntRect r2;
   int dir;
 };
 

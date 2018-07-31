@@ -4,6 +4,7 @@
 #include <Main.hpp>
 #include <unistd.h>
 #include <Player.hpp>
+#include <Functions.hpp>
 
 int main()
 {
@@ -90,14 +91,6 @@ int Game(sf::RenderWindow &window, sf::Font font)
   sf::Text readyText("Get ready!", font, 80);
   sf::Text menuButton("Menu", font, 80);
   sf::Text exitButton("Exit", font, 80);
-  sf::RectangleShape rectangle;
-  rectangle.setSize(sf::Vector2f(100,50));
-  rectangle.setOutlineColor(sf::Color::Blue);
-  rectangle.setFillColor(sf::Color::Black);
-  rectangle.setOutlineThickness(5);
-  rectangle.setPosition(500,500);
-
-  sf::IntRect r1(rectangle.getPosition().x, rectangle.getPosition().y, rectangle.getGlobalBounds().width, rectangle.getGlobalBounds().height);
   
   readyText.setFillColor(sf::Color::White);
   menuButton.setFillColor(sf::Color::White);
@@ -133,52 +126,32 @@ int Game(sf::RenderWindow &window, sf::Font font)
   mySprite.setOrigin(mySprite.getOrigin().x+mySprite.getLocalBounds().width/2, mySprite.getOrigin().y+mySprite.getLocalBounds().height/2);
   mySprite.setRotation(0);
   mySprite.setPosition(window.getSize().x/2, window.getSize().y/2*1.5);
-
-  sf::IntRect r2(mySprite.getPosition().x-mySprite.getGlobalBounds().width/2, mySprite.getPosition().y-mySprite.getGlobalBounds().height/2, mySprite.getGlobalBounds().width, mySprite.getGlobalBounds().height);
-
-  Player player1(0, 3, 0, len, textureVector, mySprite, r2, 2);
+  Player player1(0, 3, 0, len, textureVector, mySprite, 2);
+  std::vector<sf::ConvexShape> mapShapes = initMap(window);
   
   window.setFramerateLimit(60);
   window.clear(sf::Color::Black);
-  window.draw(player1.getSprite());
   window.draw(readyText);
+  for (auto it = mapShapes.begin(); it != mapShapes.end(); it++)
+    {
+      window.draw(*it);
+    }
+  window.draw(player1.getSprite());
   window.display();
   sleep(3);
       
   while(window.isOpen())
     {
-      player1.updateRect();
       sf::Vector2f spritePos = player1.getPos();
       sf::Vector2i mousePos = sf::Mouse::getPosition(window);
       sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-      if(control == 0)
+      
+      if (counter == 2)
 	{
-	  if (currentCont == 1)
-	    {
-	      player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x-10, player1.getSprite().getPosition().y));
-	    }
-	  else if (currentCont == 2)
-	    {
-	      player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x+10, player1.getSprite().getPosition().y));
-	    }
-	  else if (currentCont == 3)
-	    {
-	      player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x, player1.getSprite().getPosition().y+10));
-	    }
-	  else if (currentCont == 4)
-	    {
-	      player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x, player1.getSprite().getPosition().y-10));
-	    }
+	  counter = 0;
+	  player1.changeTexture();
 	}
-      else
-	{
-	  if (counter == 2)
-	    {
-	      counter = 0;
-	      player1.changeTexture();
-	    }
-	  counter = counter + 1;
-	}
+      counter = counter + 1;
       if(control == 1)
 	{
 	  player1.setDir(1);
@@ -203,17 +176,12 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	  player1.setRot(90);
 	  player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x, player1.getSprite().getPosition().y+speed));
 	}
-      if(r1.intersects(player1.getRect()))
-      	{
-	  currentCont = control;
-	  control = 0;
-	}
       while(window.pollEvent(event))
 	{
 	  switch(event.type)
 	    {
 	    case sf::Event::KeyPressed:
-	      if(event.key.code == sf::Keyboard::Escape) // The game is paused
+	      if(event.key.code == sf::Keyboard::Escape)
 		{
 		  while(1)
 		    {
@@ -254,6 +222,10 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			    }
 			}
 		      window.clear(sf::Color::Black);
+		      for (auto it = mapShapes.begin(); it != mapShapes.end(); it++)
+			{
+			  window.draw(*it);
+			}
 		      window.draw(player1.getSprite());
 		      window.draw(menuButton);
 		      window.draw(exitButton);
@@ -284,8 +256,11 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	    }
 	}
       window.clear(sf::Color::Black);
+      for (auto it = mapShapes.begin(); it != mapShapes.end(); it++)
+	{
+	  window.draw(*it);
+	}
       window.draw(player1.getSprite());
-      window.draw(rectangle);
       window.display();
     }
   return 0;
