@@ -5,5 +5,6 @@
 #include <vector>
 
 std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window);
+std::vector<sf::CircleShape> turningPoints(sf::RenderWindow &window);
 
 #endif

@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <Player.hpp>
 #include <Functions.hpp>
+#include <cstdlib>
 
 int main()
 {
@@ -77,6 +78,7 @@ int main()
 int Game(sf::RenderWindow &window, sf::Font font)
 {
   int control = 1;
+  int setControl = 1;
   int speed = 4;
   int counter = 0;
   int index = 0;
@@ -128,15 +130,20 @@ int Game(sf::RenderWindow &window, sf::Font font)
   mySprite.setPosition(window.getSize().x/2, window.getSize().y/2*1.5);
   Player player1(0, 3, 0, len, textureVector, mySprite, 2);
   std::vector<sf::ConvexShape> mapShapes = initMap(window);
+  std::vector<sf::CircleShape> turnPoints = turningPoints(window);
   
   window.setFramerateLimit(60);
   window.clear(sf::Color::Black);
-  window.draw(readyText);
   for (auto it = mapShapes.begin(); it != mapShapes.end(); it++)
     {
       window.draw(*it);
     }
+  for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
+    {
+      window.draw(*it);
+    }
   window.draw(player1.getSprite());
+  window.draw(readyText);
   window.display();
   sleep(3);
       
@@ -152,25 +159,93 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	  player1.changeTexture();
 	}
       counter = counter + 1;
-      if(control == 1)
+      if (setControl == 1)
+	{
+	  if (control == 2)
+	    {
+	      control = 1;
+	    }
+	  else
+	    {
+	      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
+		{
+		  if (abs(it->getPosition().x - player1.getPos().x) <= 2 && abs(it->getPosition().y - player1.getPos().y) <= 2)
+		    {
+		      control = 1;
+		    }
+		}
+	    }
+	}
+      else if (setControl == 2)
+	{
+	  if (control == 1)
+	    {
+	      control = 2;
+	    }
+	  else
+	    {
+	      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
+		{
+		  if (abs(it->getPosition().x - player1.getPos().x) <= 2 && abs(it->getPosition().y - player1.getPos().y) <= 2)
+		    {
+		      control = 2;
+		    }
+		}
+	    }
+	}
+      else if (setControl == 3)
+	{
+	  if (control == 4)
+	    {
+	      control = 3;
+	    }
+	  else
+	    {
+	      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
+		{
+		  if (abs(it->getPosition().x - player1.getPos().x) <= 2 && abs(it->getPosition().y - player1.getPos().y) <= 2)
+		    {
+		      control = 3;
+		    }
+		}
+	    }
+	}
+      else if (setControl == 4)
+	{
+	  if (control == 3)
+	    {
+	      control = 4;
+	    }
+	  else
+	    {
+	      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
+		{
+		  if (abs(it->getPosition().x - player1.getPos().x) <= 2 && abs(it->getPosition().y - player1.getPos().y) <= 2)
+		    {
+		      control = 4;
+		    }
+		}
+	    }
+	}
+      if(control == 1) // Right
 	{
 	  player1.setDir(1);
 	  player1.setRot(0);
 	  player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x+speed, player1.getSprite().getPosition().y));
 	}
-      else if(control == 2)
+      else if(control == 2) // Left
 	{
 	  player1.setDir(2);
 	  player1.setRot(180);
 	  player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x-speed, player1.getSprite().getPosition().y));
 	}
-      else if(control == 3)
+      else if(control == 3) // Up
 	{
 	  player1.setDir(3);
 	  player1.setRot(270);
 	  player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x, player1.getSprite().getPosition().y-speed));
 	}
-      else if(control == 4)
+      else if(control == 4) // Down
 	{
 	  player1.setDir(4);
 	  player1.setRot(90);
@@ -226,6 +301,10 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			{
 			  window.draw(*it);
 			}
+		      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
+			{
+			  window.draw(*it);
+			}
 		      window.draw(player1.getSprite());
 		      window.draw(menuButton);
 		      window.draw(exitButton);
@@ -238,25 +317,29 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		    }
 		}
 	      else if(event.key.code == sf::Keyboard::Up)
-		{
-		  control = 3;
+		{	  
+		  setControl = 3;
 		}
 	      else if(event.key.code == sf::Keyboard::Down)
 		{
-		  control = 4;
+		  setControl = 4;
 		}
 	      else if(event.key.code == sf::Keyboard::Left)
 		{
-		  control = 2;
+		  setControl = 2;
 		}
 	      else if(event.key.code == sf::Keyboard::Right)
 		{
-		  control = 1;
+		  setControl = 1;
 		}
 	    }
 	}
       window.clear(sf::Color::Black);
       for (auto it = mapShapes.begin(); it != mapShapes.end(); it++)
+	{
+	  window.draw(*it);
+	}
+      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 	{
 	  window.draw(*it);
 	}
