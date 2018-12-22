@@ -28,6 +28,14 @@ std::vector<sf::CircleShape> turningPoints(sf::RenderWindow &window)
   sf::CircleShape point20(5);
   sf::CircleShape point21(5);
   sf::CircleShape point22(5);
+  sf::CircleShape point23(5);
+  sf::CircleShape point24(5);
+  sf::CircleShape point25(5);
+  sf::CircleShape point26(5);
+  sf::CircleShape point27(5);
+  sf::CircleShape point28(5);
+  sf::CircleShape point29(5);
+  sf::CircleShape point30(5);
 
   point1.setFillColor(sf::Color::Red);
   point1.setOrigin(point1.getOrigin().x+point1.getLocalBounds().width/2, point1.getOrigin().y+point1.getLocalBounds().height/2);
@@ -117,6 +125,38 @@ std::vector<sf::CircleShape> turningPoints(sf::RenderWindow &window)
   point22.setOrigin(point22.getOrigin().x+point22.getLocalBounds().width/2, point22.getOrigin().y+point22.getLocalBounds().height/2);
   point22.setPosition(window.getSize().x/2*0.77, window.getSize().y/2*0.93);
 
+  point23.setFillColor(sf::Color::Red);
+  point23.setOrigin(point23.getOrigin().x+point23.getLocalBounds().width/2, point23.getOrigin().y+point23.getLocalBounds().height/2);
+  point23.setPosition(window.getSize().x/2*1.22, window.getSize().y/2*0.77);
+
+  point24.setFillColor(sf::Color::Red);
+  point24.setOrigin(point24.getOrigin().x+point24.getLocalBounds().width/2, point24.getOrigin().y+point24.getLocalBounds().height/2);
+  point24.setPosition(window.getSize().x/2*0.77, window.getSize().y/2*0.77);
+
+  point25.setFillColor(sf::Color::Red);
+  point25.setOrigin(point25.getOrigin().x+point25.getLocalBounds().width/2, point25.getOrigin().y+point25.getLocalBounds().height/2);
+  point25.setPosition(window.getSize().x/2*1.05, window.getSize().y/2*0.77);
+
+  point26.setFillColor(sf::Color::Red);
+  point26.setOrigin(point26.getOrigin().x+point26.getLocalBounds().width/2, point26.getOrigin().y+point26.getLocalBounds().height/2);
+  point26.setPosition(window.getSize().x/2*0.94, window.getSize().y/2*0.77);
+
+  point27.setFillColor(sf::Color::Red);
+  point27.setOrigin(point27.getOrigin().x+point27.getLocalBounds().width/2, point27.getOrigin().y+point27.getLocalBounds().height/2);
+  point27.setPosition(window.getSize().x/2*1.05, window.getSize().y/2*0.58);
+
+  point28.setFillColor(sf::Color::Red);
+  point28.setOrigin(point28.getOrigin().x+point28.getLocalBounds().width/2, point28.getOrigin().y+point28.getLocalBounds().height/2);
+  point28.setPosition(window.getSize().x/2*0.94, window.getSize().y/2*0.58);
+
+  point29.setFillColor(sf::Color::Red);
+  point29.setOrigin(point29.getOrigin().x+point29.getLocalBounds().width/2, point29.getOrigin().y+point29.getLocalBounds().height/2);
+  point29.setPosition(window.getSize().x/2*1.22, window.getSize().y/2*0.58);
+
+  point30.setFillColor(sf::Color::Red);
+  point30.setOrigin(point30.getOrigin().x+point30.getLocalBounds().width/2, point30.getOrigin().y+point30.getLocalBounds().height/2);
+  point30.setPosition(window.getSize().x/2*0.77, window.getSize().y/2*0.58);
+
   points.push_back(point1);
   points.push_back(point2);
   points.push_back(point3);
@@ -139,6 +179,14 @@ std::vector<sf::CircleShape> turningPoints(sf::RenderWindow &window)
   points.push_back(point20);
   points.push_back(point21);
   points.push_back(point22);
+  points.push_back(point23);
+  points.push_back(point24);
+  points.push_back(point25);
+  points.push_back(point26);
+  points.push_back(point27);
+  points.push_back(point28);
+  points.push_back(point29);
+  points.push_back(point30);
   return points;
 }
 
@@ -166,6 +214,9 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   sf::ConvexShape conv16;
   sf::ConvexShape conv17;
   sf::ConvexShape conv18;
+  sf::ConvexShape conv19;
+  sf::ConvexShape conv20;
+  sf::ConvexShape conv21;
   
   conv1.setPointCount(8);
   conv1.setPoint(0, sf::Vector2f(0, 0));
@@ -177,7 +228,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv1.setPoint(6, sf::Vector2f(0-170, 0-100));
   conv1.setPoint(7, sf::Vector2f(0, 0-100));
   conv1.setOutlineColor(sf::Color::Blue);
-  conv1.setFillColor(sf::Color::Black);
+  conv1.setFillColor(sf::Color::Transparent);
   conv1.setOutlineThickness(4);
   conv1.setPosition(sizeX*0.495, sizeY*0.90);
 
@@ -191,7 +242,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv2.setPoint(6, sf::Vector2f(0-170, 0-100));
   conv2.setPoint(7, sf::Vector2f(0, 0-100));
   conv2.setOutlineColor(sf::Color::Blue);
-  conv2.setFillColor(sf::Color::Black);
+  conv2.setFillColor(sf::Color::Transparent);
   conv2.setOutlineThickness(4);
   conv2.setPosition(sizeX*0.495, sizeY*0.71);
 
@@ -201,7 +252,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv3.setPoint(2, sf::Vector2f(0+180, 0-20));
   conv3.setPoint(3, sf::Vector2f(0, 0-20));
   conv3.setOutlineColor(sf::Color::Blue);
-  conv3.setFillColor(sf::Color::Black);
+  conv3.setFillColor(sf::Color::Transparent);
   conv3.setOutlineThickness(4);
   conv3.setPosition(sizeX*0.55, sizeY*0.71);
 
@@ -211,7 +262,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv4.setPoint(2, sf::Vector2f(0+180, 0-20));
   conv4.setPoint(3, sf::Vector2f(0, 0-20));
   conv4.setOutlineColor(sf::Color::Blue);
-  conv4.setFillColor(sf::Color::Black);
+  conv4.setFillColor(sf::Color::Transparent);
   conv4.setOutlineThickness(4);
   conv4.setPosition(sizeX*0.35, sizeY*0.71);
 
@@ -223,7 +274,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv5.setPoint(4, sf::Vector2f(0+100, 0-120));
   conv5.setPoint(5, sf::Vector2f(0, 0-120));
   conv5.setOutlineColor(sf::Color::Blue);
-  conv5.setFillColor(sf::Color::Black);
+  conv5.setFillColor(sf::Color::Transparent);
   conv5.setOutlineThickness(4);
   conv5.setPosition(sizeX*0.69, sizeY*0.805);
 
@@ -235,35 +286,35 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv6.setPoint(4, sf::Vector2f(0-100, 0-120));
   conv6.setPoint(5, sf::Vector2f(0, 0-120));
   conv6.setOutlineColor(sf::Color::Blue);
-  conv6.setFillColor(sf::Color::Black);
+  conv6.setFillColor(sf::Color::Transparent);
   conv6.setOutlineThickness(4);
   conv6.setPosition(sizeX*0.30, sizeY*0.805);
 
   conv7.setPointCount(8);
   conv7.setPoint(0, sf::Vector2f(0, 0));
-  conv7.setPoint(1, sf::Vector2f(0-400, 0));
-  conv7.setPoint(2, sf::Vector2f(0-400, 0-20));
+  conv7.setPoint(1, sf::Vector2f(0-390, 0));
+  conv7.setPoint(2, sf::Vector2f(0-390, 0-20));
   conv7.setPoint(3, sf::Vector2f(0-190, 0-20));
   conv7.setPoint(4, sf::Vector2f(0-190, 0-120));
   conv7.setPoint(5, sf::Vector2f(0-170, 0-120));
   conv7.setPoint(6, sf::Vector2f(0-170, 0-20));
   conv7.setPoint(7, sf::Vector2f(0, 0-20));
   conv7.setOutlineColor(sf::Color::Blue);
-  conv7.setFillColor(sf::Color::Black);
+  conv7.setFillColor(sf::Color::Transparent);
   conv7.setOutlineThickness(4);
   conv7.setPosition(sizeX*0.45, sizeY*0.9);
 
   conv8.setPointCount(8);
   conv8.setPoint(0, sf::Vector2f(0, 0));
-  conv8.setPoint(1, sf::Vector2f(0+400, 0));
-  conv8.setPoint(2, sf::Vector2f(0+400, 0-20));
+  conv8.setPoint(1, sf::Vector2f(0+375, 0));
+  conv8.setPoint(2, sf::Vector2f(0+375, 0-20));
   conv8.setPoint(3, sf::Vector2f(0+190, 0-20));
   conv8.setPoint(4, sf::Vector2f(0+190, 0-120));
   conv8.setPoint(5, sf::Vector2f(0+170, 0-120));
   conv8.setPoint(6, sf::Vector2f(0+170, 0-20));
   conv8.setPoint(7, sf::Vector2f(0, 0-20));
   conv8.setOutlineColor(sf::Color::Blue);
-  conv8.setFillColor(sf::Color::Black);
+  conv8.setFillColor(sf::Color::Transparent);
   conv8.setOutlineThickness(4);
   conv8.setPosition(sizeX*0.55, sizeY*0.9);
 
@@ -273,7 +324,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv9.setPoint(2, sf::Vector2f(0+350, 0-100));
   conv9.setPoint(3, sf::Vector2f(0, 0-100));
   conv9.setOutlineColor(sf::Color::Blue);
-  conv9.setFillColor(sf::Color::Black);
+  conv9.setFillColor(sf::Color::Transparent);
   conv9.setOutlineThickness(4);
   conv9.setPosition(sizeX*0.405, sizeY*0.52);
 
@@ -283,7 +334,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv10.setPoint(2, sf::Vector2f(0+20, 0-120));
   conv10.setPoint(3, sf::Vector2f(0, 0-120));
   conv10.setOutlineColor(sf::Color::Blue);
-  conv10.setFillColor(sf::Color::Black);
+  conv10.setFillColor(sf::Color::Transparent);
   conv10.setOutlineThickness(4);
   conv10.setPosition(sizeX*0.35, sizeY*0.62);
 
@@ -293,7 +344,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv11.setPoint(2, sf::Vector2f(0+20, 0-120));
   conv11.setPoint(3, sf::Vector2f(0, 0-120));
   conv11.setOutlineColor(sf::Color::Blue);
-  conv11.setFillColor(sf::Color::Black);
+  conv11.setFillColor(sf::Color::Transparent);
   conv11.setOutlineThickness(4);
   conv11.setPosition(sizeX*0.63, sizeY*0.62);
 
@@ -307,7 +358,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv12.setPoint(6, sf::Vector2f(0-170, 0-100));
   conv12.setPoint(7, sf::Vector2f(0, 0-100));
   conv12.setOutlineColor(sf::Color::Blue);
-  conv12.setFillColor(sf::Color::Black);
+  conv12.setFillColor(sf::Color::Transparent);
   conv12.setOutlineThickness(4);
   conv12.setPosition(sizeX*0.495, sizeY*0.35);
 
@@ -321,7 +372,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv13.setPoint(6, sf::Vector2f(0+150, 0-100));
   conv13.setPoint(7, sf::Vector2f(0+150, 0));
   conv13.setOutlineColor(sf::Color::Blue);
-  conv13.setFillColor(sf::Color::Black);
+  conv13.setFillColor(sf::Color::Transparent);
   conv13.setOutlineThickness(4);
   conv13.setPosition(sizeX*0.55, sizeY*0.33);
 
@@ -335,7 +386,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv14.setPoint(6, sf::Vector2f(0-160, 0-100));
   conv14.setPoint(7, sf::Vector2f(0-160, 0));
   conv14.setOutlineColor(sf::Color::Blue);
-  conv14.setFillColor(sf::Color::Black);
+  conv14.setFillColor(sf::Color::Transparent);
   conv14.setOutlineThickness(4);
   conv14.setPosition(sizeX*0.446, sizeY*0.33);
 
@@ -345,7 +396,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv15.setPoint(2, sf::Vector2f(0+100, 0-20));
   conv15.setPoint(3, sf::Vector2f(0, 0-20));
   conv15.setOutlineColor(sf::Color::Blue);
-  conv15.setFillColor(sf::Color::Black);
+  conv15.setFillColor(sf::Color::Transparent);
   conv15.setOutlineThickness(4);
   conv15.setPosition(sizeX*0.247, sizeY*0.26);
 
@@ -355,7 +406,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv16.setPoint(2, sf::Vector2f(0+100, 0-20));
   conv16.setPoint(3, sf::Vector2f(0, 0-20));
   conv16.setOutlineColor(sf::Color::Blue);
-  conv16.setFillColor(sf::Color::Black);
+  conv16.setFillColor(sf::Color::Transparent);
   conv16.setOutlineThickness(4);
   conv16.setPosition(sizeX*0.69, sizeY*0.26);
 
@@ -365,7 +416,7 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv17.setPoint(2, sf::Vector2f(0+100, 0+70));
   conv17.setPoint(3, sf::Vector2f(0, 0+70));
   conv17.setOutlineColor(sf::Color::Blue);
-  conv17.setFillColor(sf::Color::Black);
+  conv17.setFillColor(sf::Color::Transparent);
   conv17.setOutlineThickness(4);
   conv17.setPosition(sizeX*0.247, sizeY*0.09);
 
@@ -375,9 +426,39 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv18.setPoint(2, sf::Vector2f(0+100, 0+70));
   conv18.setPoint(3, sf::Vector2f(0, 0+70));
   conv18.setOutlineColor(sf::Color::Blue);
-  conv18.setFillColor(sf::Color::Black);
+  conv18.setFillColor(sf::Color::Transparent);
   conv18.setOutlineThickness(4);
   conv18.setPosition(sizeX*0.69, sizeY*0.09);
+
+  conv19.setPointCount(4);
+  conv19.setPoint(0, sf::Vector2f(0, 0));
+  conv19.setPoint(1, sf::Vector2f(0+180, 0));
+  conv19.setPoint(2, sf::Vector2f(0+180, 0+70));
+  conv19.setPoint(3, sf::Vector2f(0, 0+70));
+  conv19.setOutlineColor(sf::Color::Blue);
+  conv19.setFillColor(sf::Color::Transparent);
+  conv19.setOutlineThickness(4);
+  conv19.setPosition(sizeX*0.55, sizeY*0.09);
+
+  conv20.setPointCount(4);
+  conv20.setPoint(0, sf::Vector2f(0, 0));
+  conv20.setPoint(1, sf::Vector2f(0+180, 0));
+  conv20.setPoint(2, sf::Vector2f(0+180, 0+70));
+  conv20.setPoint(3, sf::Vector2f(0, 0+70));
+  conv20.setOutlineColor(sf::Color::Blue);
+  conv20.setFillColor(sf::Color::Transparent);
+  conv20.setOutlineThickness(4);
+  conv20.setPosition(sizeX*0.35, sizeY*0.09);
+
+  conv21.setPointCount(4);
+  conv21.setPoint(0, sf::Vector2f(0, 0));
+  conv21.setPoint(1, sf::Vector2f(0+1150, 0));
+  conv21.setPoint(2, sf::Vector2f(0+1150, 0+1050));
+  conv21.setPoint(3, sf::Vector2f(0, 0+1050));
+  conv21.setOutlineColor(sf::Color::Blue);
+  conv21.setFillColor(sf::Color::Transparent);
+  conv21.setOutlineThickness(4);
+  conv21.setPosition(sizeX*0.2, sizeY*0.01);
   
   mapShapes.push_back(conv1);
   mapShapes.push_back(conv2);
@@ -397,5 +478,8 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   mapShapes.push_back(conv16);
   mapShapes.push_back(conv17);
   mapShapes.push_back(conv18);
+  mapShapes.push_back(conv19);
+  mapShapes.push_back(conv20);
+  mapShapes.push_back(conv21);
   return mapShapes;
 }
