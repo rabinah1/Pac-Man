@@ -58,6 +58,26 @@ std::vector<sf::CircleShape> turningPoints(sf::RenderWindow &window)
   sf::CircleShape point50(5);
   sf::CircleShape point51(5);
   sf::CircleShape point52(5);
+  sf::CircleShape point53(5);
+  sf::CircleShape point54(5);
+  sf::CircleShape point55(5);
+  sf::CircleShape point56(5);
+  sf::CircleShape point57(5);
+  sf::CircleShape point58(5);
+  sf::CircleShape point59(5);
+  sf::CircleShape point60(5);
+  sf::CircleShape point61(5);
+  sf::CircleShape point62(5);
+  sf::CircleShape point63(5);
+  sf::CircleShape point64(5);
+  sf::CircleShape point65(5);
+  sf::CircleShape point66(5);
+  sf::CircleShape point67(5);
+  sf::CircleShape point68(5);
+  sf::CircleShape point69(5);
+  sf::CircleShape point70(5);
+  sf::CircleShape point71(5);
+  sf::CircleShape point72(5);
   
   point1.setFillColor(sf::Color::Red);
   point1.setOrigin(point1.getOrigin().x+point1.getLocalBounds().width/2, point1.getOrigin().y+point1.getLocalBounds().height/2);
@@ -253,19 +273,103 @@ std::vector<sf::CircleShape> turningPoints(sf::RenderWindow &window)
 
   point49.setFillColor(sf::Color::Red);
   point49.setOrigin(point49.getOrigin().x+point49.getLocalBounds().width/2, point49.getOrigin().y+point49.getLocalBounds().height/2);
-  point49.setPosition(window.getSize().x/2*1.33, window.getSize().y/2*1.12);
+  point49.setPosition(window.getSize().x/2*0.45, window.getSize().y/2*1.12);
 
   point50.setFillColor(sf::Color::Red);
   point50.setOrigin(point50.getOrigin().x+point50.getLocalBounds().width/2, point50.getOrigin().y+point50.getLocalBounds().height/2);
-  point50.setPosition(window.getSize().x/2*0.45, window.getSize().y/2*1.12);
+  point50.setPosition(window.getSize().x/2*0.54, window.getSize().y/2*1.12);
 
   point51.setFillColor(sf::Color::Red);
   point51.setOrigin(point51.getOrigin().x+point51.getLocalBounds().width/2, point51.getOrigin().y+point51.getLocalBounds().height/2);
-  point51.setPosition(window.getSize().x/2*0.54, window.getSize().y/2*1.12);
+  point51.setPosition(window.getSize().x/2*0.65, window.getSize().y/2*0.93);
 
   point52.setFillColor(sf::Color::Red);
   point52.setOrigin(point52.getOrigin().x+point52.getLocalBounds().width/2, point52.getOrigin().y+point52.getLocalBounds().height/2);
-  point52.setPosition(window.getSize().x/2*0.65, window.getSize().y/2*1.12);
+  point52.setPosition(window.getSize().x/2*0.45, window.getSize().y/2*0.93);
+
+  point53.setFillColor(sf::Color::Red);
+  point53.setOrigin(point53.getOrigin().x+point53.getLocalBounds().width/2, point53.getOrigin().y+point53.getLocalBounds().height/2);
+  point53.setPosition(window.getSize().x/2*1.33, window.getSize().y/2*0.93);
+
+  point54.setFillColor(sf::Color::Red);
+  point54.setOrigin(point54.getOrigin().x+point54.getLocalBounds().width/2, point54.getOrigin().y+point54.getLocalBounds().height/2);
+  point54.setPosition(window.getSize().x/2*1.55, window.getSize().y/2*0.93);
+
+  point55.setFillColor(sf::Color::Red);
+  point55.setOrigin(point55.getOrigin().x+point55.getLocalBounds().width/2, point55.getOrigin().y+point55.getLocalBounds().height/2);
+  point55.setPosition(window.getSize().x/2*0.65, window.getSize().y/2*0.58);
+
+  point56.setFillColor(sf::Color::Red);
+  point56.setOrigin(point56.getOrigin().x+point56.getLocalBounds().width/2, point56.getOrigin().y+point56.getLocalBounds().height/2);
+  point56.setPosition(window.getSize().x/2*0.45, window.getSize().y/2*0.58);
+
+  point57.setFillColor(sf::Color::Red);
+  point57.setOrigin(point57.getOrigin().x+point57.getLocalBounds().width/2, point57.getOrigin().y+point57.getLocalBounds().height/2);
+  point57.setPosition(window.getSize().x/2*1.33, window.getSize().y/2*0.58);
+
+  point58.setFillColor(sf::Color::Red);
+  point58.setOrigin(point58.getOrigin().x+point58.getLocalBounds().width/2, point58.getOrigin().y+point58.getLocalBounds().height/2);
+  point58.setPosition(window.getSize().x/2*1.55, window.getSize().y/2*0.58);
+
+  point59.setFillColor(sf::Color::Red);
+  point59.setOrigin(point59.getOrigin().x+point59.getLocalBounds().width/2, point59.getOrigin().y+point59.getLocalBounds().height/2);
+  point59.setPosition(window.getSize().x/2*0.45, window.getSize().y/2*0.40);
+
+  point60.setFillColor(sf::Color::Red);
+  point60.setOrigin(point60.getOrigin().x+point60.getLocalBounds().width/2, point60.getOrigin().y+point60.getLocalBounds().height/2);
+  point60.setPosition(window.getSize().x/2*0.65, window.getSize().y/2*0.40);
+
+  point61.setFillColor(sf::Color::Red);
+  point61.setOrigin(point61.getOrigin().x+point61.getLocalBounds().width/2, point61.getOrigin().y+point61.getLocalBounds().height/2);
+  point61.setPosition(window.getSize().x/2*0.77, window.getSize().y/2*0.40);
+
+  point62.setFillColor(sf::Color::Red);
+  point62.setOrigin(point62.getOrigin().x+point62.getLocalBounds().width/2, point62.getOrigin().y+point62.getLocalBounds().height/2);
+  point62.setPosition(window.getSize().x/2*0.94, window.getSize().y/2*0.40);
+
+  point63.setFillColor(sf::Color::Red);
+  point63.setOrigin(point63.getOrigin().x+point63.getLocalBounds().width/2, point63.getOrigin().y+point63.getLocalBounds().height/2);
+  point63.setPosition(window.getSize().x/2*1.05, window.getSize().y/2*0.40);
+
+  point64.setFillColor(sf::Color::Red);
+  point64.setOrigin(point64.getOrigin().x+point64.getLocalBounds().width/2, point64.getOrigin().y+point64.getLocalBounds().height/2);
+  point64.setPosition(window.getSize().x/2*1.22, window.getSize().y/2*0.40);
+
+  point65.setFillColor(sf::Color::Red);
+  point65.setOrigin(point65.getOrigin().x+point65.getLocalBounds().width/2, point65.getOrigin().y+point65.getLocalBounds().height/2);
+  point65.setPosition(window.getSize().x/2*1.33, window.getSize().y/2*0.40);
+
+  point66.setFillColor(sf::Color::Red);
+  point66.setOrigin(point66.getOrigin().x+point66.getLocalBounds().width/2, point66.getOrigin().y+point66.getLocalBounds().height/2);
+  point66.setPosition(window.getSize().x/2*1.55, window.getSize().y/2*0.40);
+
+  point67.setFillColor(sf::Color::Red);
+  point67.setOrigin(point67.getOrigin().x+point67.getLocalBounds().width/2, point67.getOrigin().y+point67.getLocalBounds().height/2);
+  point67.setPosition(window.getSize().x/2*0.45, window.getSize().y/2*0.1);
+
+  point67.setFillColor(sf::Color::Red);
+  point67.setOrigin(point67.getOrigin().x+point67.getLocalBounds().width/2, point67.getOrigin().y+point67.getLocalBounds().height/2);
+  point67.setPosition(window.getSize().x/2*0.65, window.getSize().y/2*0.1);
+
+  point68.setFillColor(sf::Color::Red);
+  point68.setOrigin(point68.getOrigin().x+point68.getLocalBounds().width/2, point68.getOrigin().y+point68.getLocalBounds().height/2);
+  point68.setPosition(window.getSize().x/2*0.94, window.getSize().y/2*0.1);
+
+  point69.setFillColor(sf::Color::Red);
+  point69.setOrigin(point69.getOrigin().x+point69.getLocalBounds().width/2, point69.getOrigin().y+point69.getLocalBounds().height/2);
+  point69.setPosition(window.getSize().x/2*1.05, window.getSize().y/2*0.1);
+
+  point70.setFillColor(sf::Color::Red);
+  point70.setOrigin(point70.getOrigin().x+point70.getLocalBounds().width/2, point70.getOrigin().y+point70.getLocalBounds().height/2);
+  point70.setPosition(window.getSize().x/2*1.33, window.getSize().y/2*0.1);
+
+  point71.setFillColor(sf::Color::Red);
+  point71.setOrigin(point71.getOrigin().x+point71.getLocalBounds().width/2, point71.getOrigin().y+point71.getLocalBounds().height/2);
+  point71.setPosition(window.getSize().x/2*1.55, window.getSize().y/2*0.1);
+
+  point72.setFillColor(sf::Color::Red);
+  point72.setOrigin(point72.getOrigin().x+point72.getLocalBounds().width/2, point72.getOrigin().y+point72.getLocalBounds().height/2);
+  point72.setPosition(window.getSize().x/2*0.45, window.getSize().y/2*0.1);
 
   points.push_back(point1);
   points.push_back(point2);
@@ -319,6 +423,27 @@ std::vector<sf::CircleShape> turningPoints(sf::RenderWindow &window)
   points.push_back(point50);
   points.push_back(point51);
   points.push_back(point52);
+  points.push_back(point53);
+  points.push_back(point54);
+  points.push_back(point55);
+  points.push_back(point56);
+  points.push_back(point57);
+  points.push_back(point58);
+  points.push_back(point65);
+  points.push_back(point59);
+  points.push_back(point60);
+  points.push_back(point61);
+  points.push_back(point62);
+  points.push_back(point63);
+  points.push_back(point64);
+  points.push_back(point65);
+  points.push_back(point66);
+  points.push_back(point67);
+  points.push_back(point68);
+  points.push_back(point69);
+  points.push_back(point70);
+  points.push_back(point71);
+  points.push_back(point72);
   return points;
 }
 
