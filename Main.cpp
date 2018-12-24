@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <string>
 #include <vector>
+#include <tuple>
 #include <Main.hpp>
 #include <unistd.h>
 #include <Player.hpp>
@@ -78,12 +80,14 @@ int main()
 int Game(sf::RenderWindow &window, sf::Font font)
 {
   int control = 1;
-  int setControl = 1;
+  std::string setControl = "Right";
   int speed = 4;
   int counter = 0;
   int index = 0;
   int pause = 0;
   int currentCont = 0;
+  int temp = 0;
+  std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string> currPoint;
   sf::Event event;
   sf::Texture pac1;
   sf::Texture pac2;
@@ -130,7 +134,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   mySprite.setPosition(window.getSize().x/2, window.getSize().y/2*1.5);
   Player player1(0, 3, 0, len, textureVector, mySprite, 2);
   std::vector<sf::ConvexShape> mapShapes = initMap(window);
-  std::vector<sf::CircleShape> turnPoints = turningPoints(window);
+  std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string>> turnPoints = turningPoints(window);
   
   window.setFramerateLimit(60);
   window.clear(sf::Color::Black);
@@ -140,7 +144,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
     }
   for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
     {
-      window.draw(*it);
+      window.draw(std::get<0>(*it));
     }
   window.draw(player1.getSprite());
   window.draw(readyText);
@@ -156,10 +160,23 @@ int Game(sf::RenderWindow &window, sf::Font font)
       if (counter == 2)
 	{
 	  counter = 0;
-	  player1.changeTexture();
+	  if (temp == 0)
+	    {
+	      player1.changeTexture();
+	    }
 	}
       counter = counter + 1;
-      if (setControl == 1)
+      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
+	{
+	  if (abs(std::get<0>(*it).getPosition().x - player1.getPos().x) <= 2 && abs(std::get<0>(*it).getPosition().y - player1.getPos().y) <= 2 && ((std::get<1>(*it) != "Left" && control == 2) || (std::get<2>(*it) != "Right" && control == 1) || (std::get<3>(*it) != "Up" && control == 3) || (std::get<4>(*it) != "Down" && control == 4)))
+	    {
+	      temp = 1;
+	      speed = 0;
+	      currPoint = *it;
+	      break;
+	    }
+	}
+      if (setControl == "Right")
 	{
 	  if (control == 2)
 	    {
@@ -169,14 +186,15 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	    {
 	      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 		{
-		  if (abs(it->getPosition().x - player1.getPos().x) <= 2 && abs(it->getPosition().y - player1.getPos().y) <= 2)
+		  if (abs(std::get<0>(*it).getPosition().x - player1.getPos().x) <= 2 && abs(std::get<0>(*it).getPosition().y - player1.getPos().y) <= 2 && std::get<2>(*it) == "Right")
 		    {
 		      control = 1;
+		      break;
 		    }
 		}
 	    }
 	}
-      else if (setControl == 2)
+      else if (setControl == "Left")
 	{
 	  if (control == 1)
 	    {
@@ -186,14 +204,15 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	    {
 	      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 		{
-		  if (abs(it->getPosition().x - player1.getPos().x) <= 2 && abs(it->getPosition().y - player1.getPos().y) <= 2)
+		  if (abs(std::get<0>(*it).getPosition().x - player1.getPos().x) <= 2 && abs(std::get<0>(*it).getPosition().y - player1.getPos().y) <= 2 && std::get<1>(*it) == "Left")
 		    {
 		      control = 2;
+		      break;
 		    }
 		}
 	    }
 	}
-      else if (setControl == 3)
+      else if (setControl == "Up")
 	{
 	  if (control == 4)
 	    {
@@ -203,14 +222,15 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	    {
 	      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 		{
-		  if (abs(it->getPosition().x - player1.getPos().x) <= 2 && abs(it->getPosition().y - player1.getPos().y) <= 2)
+		  if (abs(std::get<0>(*it).getPosition().x - player1.getPos().x) <= 2 && abs(std::get<0>(*it).getPosition().y - player1.getPos().y) <= 2 && std::get<3>(*it) == "Up")
 		    {
 		      control = 3;
+		      break;
 		    }
 		}
 	    }
 	}
-      else if (setControl == 4)
+      else if (setControl == "Down")
 	{
 	  if (control == 3)
 	    {
@@ -220,33 +240,70 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	    {
 	      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 		{
-		  if (abs(it->getPosition().x - player1.getPos().x) <= 2 && abs(it->getPosition().y - player1.getPos().y) <= 2)
+		  if (abs(std::get<0>(*it).getPosition().x - player1.getPos().x) <= 2 && abs(std::get<0>(*it).getPosition().y - player1.getPos().y) <= 2 && std::get<4>(*it) == "Down")
 		    {
 		      control = 4;
+		      break;
 		    }
 		}
 	    }
 	}
       if(control == 1) // Right
 	{
+	  if (temp == 0)
+	    {
+	      speed = 4;
+	    }
+	  else if ((std::get<1>(currPoint) == "Left" && setControl == "Left") || (std::get<2>(currPoint) == "Right" && setControl == "Right") || (std::get<3>(currPoint) == "Up" && setControl == "Up") || (std::get<4>(currPoint) == "Down" && setControl == "Down"))
+	    {
+	      temp = 0;
+	      speed = 4;
+	    }
 	  player1.setDir(1);
 	  player1.setRot(0);
 	  player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x+speed, player1.getSprite().getPosition().y));
 	}
       else if(control == 2) // Left
 	{
+	  if (temp == 0)
+	    {
+	      speed = 4;
+	    }
+	  else if ((std::get<1>(currPoint) == "Left" && setControl == "Left") || (std::get<2>(currPoint) == "Right" && setControl == "Right") || (std::get<3>(currPoint) == "Up" && setControl == "Up") || (std::get<4>(currPoint) == "Down" && setControl == "Down"))
+	    {
+	      temp = 0;
+	      speed = 4;
+	    }
 	  player1.setDir(2);
 	  player1.setRot(180);
 	  player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x-speed, player1.getSprite().getPosition().y));
 	}
       else if(control == 3) // Up
 	{
+	  if (temp == 0)
+	    {
+	      speed = 4;
+	    }
+	  else if ((std::get<1>(currPoint) == "Left" && setControl == "Left") || (std::get<2>(currPoint) == "Right" && setControl == "Right") || (std::get<3>(currPoint) == "Up" && setControl == "Up") || (std::get<4>(currPoint) == "Down" && setControl == "Down"))
+	    {
+	      temp = 0;
+	      speed = 4;
+	    }
 	  player1.setDir(3);
 	  player1.setRot(270);
 	  player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x, player1.getSprite().getPosition().y-speed));
 	}
       else if(control == 4) // Down
 	{
+	  if (temp == 0)
+	    {
+	      speed = 4;
+	    }
+	  else if ((std::get<1>(currPoint) == "Left" && setControl == "Left") || (std::get<2>(currPoint) == "Right" && setControl == "Right") || (std::get<3>(currPoint) == "Up" && setControl == "Up") || (std::get<4>(currPoint) == "Down" && setControl == "Down"))
+	    {
+	      temp = 0;
+	      speed = 4;
+	    }
 	  player1.setDir(4);
 	  player1.setRot(90);
 	  player1.setPos(sf::Vector2f(player1.getSprite().getPosition().x, player1.getSprite().getPosition().y+speed));
@@ -303,7 +360,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			}
 		      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 			{
-			  window.draw(*it);
+			  window.draw(std::get<0>(*it));
 			}
 		      window.draw(player1.getSprite());
 		      window.draw(menuButton);
@@ -317,20 +374,20 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		    }
 		}
 	      else if(event.key.code == sf::Keyboard::Up)
-		{	  
-		  setControl = 3;
+		{
+		  setControl = "Up";
 		}
 	      else if(event.key.code == sf::Keyboard::Down)
 		{
-		  setControl = 4;
+		  setControl = "Down";
 		}
 	      else if(event.key.code == sf::Keyboard::Left)
 		{
-		  setControl = 2;
+		  setControl = "Left";
 		}
 	      else if(event.key.code == sf::Keyboard::Right)
 		{
-		  setControl = 1;
+		  setControl = "Right";
 		}
 	    }
 	}
@@ -341,7 +398,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	}
       for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 	{
-	  window.draw(*it);
+	  window.draw(std::get<0>(*it));
 	}
       window.draw(player1.getSprite());
       window.display();
