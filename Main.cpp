@@ -6,6 +6,7 @@
 #include <Main.hpp>
 #include <unistd.h>
 #include <Player.hpp>
+#include <Enemy.hpp>
 #include <Functions.hpp>
 #include <cstdlib>
 
@@ -82,6 +83,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int control = 1;
   std::string setControl = "Right";
   int speed = 4;
+  int enemySpeed = 4;
   int counter = 0;
   int index = 0;
   int pause = 0;
@@ -94,6 +96,10 @@ int Game(sf::RenderWindow &window, sf::Font font)
   sf::Texture pac3;
   sf::Texture pac4;
   sf::Texture pac5;
+  sf::Texture E1;
+  sf::Texture E2;
+  sf::Texture E3;
+  sf::Texture E4;
   sf::Text readyText("Get ready!", font, 80);
   sf::Text menuButton("Menu", font, 80);
   sf::Text exitButton("Exit", font, 80);
@@ -109,6 +115,14 @@ int Game(sf::RenderWindow &window, sf::Font font)
   pac3.loadFromFile("Pac3.png");
   pac4.loadFromFile("Pac4.png");
   pac5.loadFromFile("Pac5.png");
+  E1.loadFromFile("Enemy1.png");
+  E2.loadFromFile("Enemy2.png");
+  E3.loadFromFile("Enemy3.png");
+  E4.loadFromFile("Enemy4.png");
+  E1.setSmooth(true);
+  E2.setSmooth(true);
+  E3.setSmooth(true);
+  E4.setSmooth(true);
   pac1.setSmooth(true);
   pac2.setSmooth(true);
   pac3.setSmooth(true);
@@ -127,12 +141,42 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int len = textureVector.size();
 
   sf::Sprite mySprite;
+  sf::Sprite Enemy1;
+  sf::Sprite Enemy2;
+  sf::Sprite Enemy3;
+  sf::Sprite Enemy4;
+  
+  Enemy1.setTexture(E1);
+  Enemy1.setOrigin(Enemy1.getOrigin().x+Enemy1.getLocalBounds().width/2, Enemy1.getOrigin().y+Enemy1.getLocalBounds().height/2);
+  Enemy1.setRotation(0);
+  Enemy1.setPosition(window.getSize().x/2*0.86, window.getSize().y/2*0.95);
+
+  Enemy2.setTexture(E2);
+  Enemy2.setOrigin(Enemy2.getOrigin().x+Enemy2.getLocalBounds().width/2, Enemy2.getOrigin().y+Enemy2.getLocalBounds().height/2);
+  Enemy2.setRotation(0);
+  Enemy2.setPosition(window.getSize().x/2*0.95, window.getSize().y/2*0.95);
+
+  Enemy3.setTexture(E3);
+  Enemy3.setOrigin(Enemy3.getOrigin().x+Enemy3.getLocalBounds().width/2, Enemy3.getOrigin().y+Enemy3.getLocalBounds().height/2);
+  Enemy3.setRotation(0);
+  Enemy3.setPosition(window.getSize().x/2*1.04, window.getSize().y/2*0.95);
+
+  Enemy4.setTexture(E4);
+  Enemy4.setOrigin(Enemy4.getOrigin().x+Enemy4.getLocalBounds().width/2, Enemy4.getOrigin().y+Enemy4.getLocalBounds().height/2);
+  Enemy4.setRotation(0);
+  Enemy4.setPosition(window.getSize().x/2*1.13, window.getSize().y/2*0.95);
+  
   mySprite.setTexture(pac5);
   mySprite.setTexture(pac1);
   mySprite.setOrigin(mySprite.getOrigin().x+mySprite.getLocalBounds().width/2, mySprite.getOrigin().y+mySprite.getLocalBounds().height/2);
   mySprite.setRotation(0);
   mySprite.setPosition(window.getSize().x/2, window.getSize().y/2*1.5);
+  
   Player player1(0, 3, 0, len, textureVector, mySprite, 2);
+  Enemy enemy1(1, Enemy1, E1);
+  Enemy enemy2(1, Enemy2, E2);
+  Enemy enemy3(1, Enemy3, E3);
+  Enemy enemy4(1, Enemy4, E4);
   std::vector<sf::ConvexShape> mapShapes = initMap(window);
   std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string>> turnPoints = turningPoints(window);
   
@@ -146,6 +190,10 @@ int Game(sf::RenderWindow &window, sf::Font font)
     {
       window.draw(std::get<0>(*it));
     }
+  window.draw(enemy1.getSprite());
+  window.draw(enemy2.getSprite());
+  window.draw(enemy3.getSprite());
+  window.draw(enemy4.getSprite());
   window.draw(player1.getSprite());
   window.draw(readyText);
   window.display();
@@ -248,6 +296,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		}
 	    }
 	}
+      //enemy1.setPos(sf::Vector2f(enemy1.getPos().x+enemySpeed, enemy1.getPos().y));
       if(control == 1) // Right
 	{
 	  if (temp == 0)
@@ -362,6 +411,10 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			{
 			  window.draw(std::get<0>(*it));
 			}
+		      window.draw(enemy1.getSprite());
+		      window.draw(enemy2.getSprite());
+		      window.draw(enemy3.getSprite());
+		      window.draw(enemy4.getSprite());
 		      window.draw(player1.getSprite());
 		      window.draw(menuButton);
 		      window.draw(exitButton);
@@ -400,6 +453,10 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	{
 	  window.draw(std::get<0>(*it));
 	}
+      window.draw(enemy1.getSprite());
+      window.draw(enemy2.getSprite());
+      window.draw(enemy3.getSprite());
+      window.draw(enemy4.getSprite());
       window.draw(player1.getSprite());
       window.display();
     }
