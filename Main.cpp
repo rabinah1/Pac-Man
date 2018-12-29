@@ -179,6 +179,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   Enemy enemy4(1, Enemy4, E4);
   std::vector<sf::ConvexShape> mapShapes = initMap(window);
   std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string>> turnPoints = turningPoints(window);
+  int **AdjMat = createAdjacency();
   
   window.setFramerateLimit(60);
   window.clear(sf::Color::Black);
@@ -394,10 +395,22 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			    case sf::Event::MouseButtonPressed:
 			      if(menuButton.getGlobalBounds().contains(mousePosF))
 				{
+				  for (int h = 0; h < 72; h++)
+				    {
+				      delete [] AdjMat[h];
+				    }
+				  delete [] AdjMat;
+				  AdjMat = 0;
 				  return 0;
 				}
 			      else if(exitButton.getGlobalBounds().contains(mousePosF))
 				{
+				  for (int h = 0; h < 72; h++)
+				    {
+				      delete [] AdjMat[h];
+				    }
+				  delete [] AdjMat;
+				  AdjMat = 0;
 				  return 1;
 				}
 			    }
