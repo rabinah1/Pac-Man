@@ -203,7 +203,6 @@ int Game(sf::RenderWindow &window, sf::Font font)
       
   while(window.isOpen())
     {
-      //dijkstra(AdjMat, 0);
       sf::Vector2f spritePos = player1.getPos();
       sf::Vector2i mousePos = sf::Mouse::getPosition(window);
       sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
