@@ -7,10 +7,14 @@
 #include <string>
 #include <cstdio>
 #include <new>
+#include <stdio.h>
+#include <limits.h>
 
 std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window);
-//std::vector<sf::CircleShape> turningPoints(sf::RenderWindow &window);
 std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string>> turningPoints(sf::RenderWindow &window);
 int ** createAdjacency();
+int minDistance(int dist[], bool sptSet[]);
+void printSolution(int dist[], int n);
+void dijkstra(int **graph, int src);
 
 #endif

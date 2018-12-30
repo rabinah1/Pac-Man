@@ -180,6 +180,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   std::vector<sf::ConvexShape> mapShapes = initMap(window);
   std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string>> turnPoints = turningPoints(window);
   int **AdjMat = createAdjacency();
+  dijkstra(AdjMat, 0);
   
   window.setFramerateLimit(60);
   window.clear(sf::Color::Black);
@@ -202,6 +203,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
       
   while(window.isOpen())
     {
+      //dijkstra(AdjMat, 0);
       sf::Vector2f spritePos = player1.getPos();
       sf::Vector2i mousePos = sf::Mouse::getPosition(window);
       sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
