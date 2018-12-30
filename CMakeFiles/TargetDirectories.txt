@@ -1,3 +1,0 @@
-/home/henry/Pac-Man/CMakeFiles/rebuild_cache.dir
-/home/henry/Pac-Man/CMakeFiles/main.dir
-/home/henry/Pac-Man/CMakeFiles/edit_cache.dir
