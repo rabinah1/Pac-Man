@@ -11,7 +11,7 @@
 #include <limits.h>
 
 std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window);
-std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string>> turningPoints(sf::RenderWindow &window);
+std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int>> turningPoints(sf::RenderWindow &window);
 int ** createAdjacency();
 int minDistance(int dist[], bool sptSet[]);
 void printSolution(int dist[], int n);

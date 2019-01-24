@@ -89,7 +89,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int pause = 0;
   int currentCont = 0;
   int temp = 0;
-  std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string> currPoint;
+  std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int> currPoint;
   sf::Event event;
   sf::Texture pac1;
   sf::Texture pac2;
@@ -178,7 +178,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   Enemy enemy3(1, Enemy3, E3);
   Enemy enemy4(1, Enemy4, E4);
   std::vector<sf::ConvexShape> mapShapes = initMap(window);
-  std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string>> turnPoints = turningPoints(window);
+  std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int>> turnPoints = turningPoints(window);
   int **AdjMat = createAdjacency();
   dijkstra(AdjMat, 0);
   
@@ -224,6 +224,13 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	      speed = 0;
 	      currPoint = *it;
 	      break;
+	    }
+	}
+      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
+	{
+	  if (abs(std::get<0>(*it).getPosition().x - player1.getPos().x) <= 2 && abs(std::get<0>(*it).getPosition().y - player1.getPos().y) <= 2)
+	    {
+	      std::cout << std::get<5>(*it) << "\n";
 	    }
 	}
       if (setControl == "Right")
