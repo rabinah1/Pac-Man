@@ -9,6 +9,7 @@
 #include <Enemy.hpp>
 #include <Functions.hpp>
 #include <cstdlib>
+#include <time.h>
 
 int main()
 {
@@ -89,6 +90,14 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int pause = 0;
   int currentCont = 0;
   int temp = 0;
+  int sizeX = window.getSize().x;
+  int sizeY = window.getSize().y;
+  //int initRand = 0;
+  int randDir = 0;
+  int checker = 0;
+  int dirChange1 = 0;
+  int dirChange2 = 0;
+  int loop_check = 0;
   std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int> currPoint;
   sf::Event event;
   sf::Texture pac1;
@@ -173,14 +182,19 @@ int Game(sf::RenderWindow &window, sf::Font font)
   mySprite.setPosition(window.getSize().x/2, window.getSize().y/2*1.5);
   
   Player player1(0, 3, 0, len, textureVector, mySprite, 2);
-  Enemy enemy1(1, Enemy1, E1);
-  Enemy enemy2(1, Enemy2, E2);
-  Enemy enemy3(1, Enemy3, E3);
-  Enemy enemy4(1, Enemy4, E4);
+  Enemy enemy1(1, Enemy1, E1, 0, 0);
+  Enemy enemy2(1, Enemy2, E2, 0, 0);
+  Enemy enemy3(1, Enemy3, E3, 0, 0);
+  Enemy enemy4(1, Enemy4, E4, 0, 0);
   std::vector<sf::ConvexShape> mapShapes = initMap(window);
   std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int>> turnPoints = turningPoints(window);
+  std::vector<Enemy> enemyList;
+  enemyList.push_back(enemy1);
+  enemyList.push_back(enemy2);
+  enemyList.push_back(enemy3);
+  enemyList.push_back(enemy4);
   int **AdjMat = createAdjacency();
-  dijkstra(AdjMat, 0);
+  //dijkstra(AdjMat, 0);
   
   window.setFramerateLimit(60);
   window.clear(sf::Color::Black);
@@ -203,9 +217,90 @@ int Game(sf::RenderWindow &window, sf::Font font)
       
   while(window.isOpen())
     {
+      //enemy1.setPos(sf::Vector2f(enemy1.getPos().x+enemySpeed, enemy1.getPos().y));
       sf::Vector2f spritePos = player1.getPos();
       sf::Vector2i mousePos = sf::Mouse::getPosition(window);
       sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+      loop_check = 0;
+      for (auto it = enemyList.begin(); it != enemyList.end(); it++)
+	{
+	  if (loop_check <= 1)
+	    {
+	      if ((*it).getPos().x <= sizeX*0.5 && (*it).getStartPos() == 0)
+		{
+		  (*it).setPos(sf::Vector2f((*it).getPos().x+enemySpeed, (*it).getPos().y));
+		}
+	      else if ((*it).getStartPos() == 0)
+		{
+		  if ((*it).getPos().y >= sizeY/2*0.77)
+		    {
+		      (*it).setPos(sf::Vector2f((*it).getPos().x, (*it).getPos().y-enemySpeed));
+		    }
+		  else
+		    {
+		      (*it).setStartPos(1);
+		      (*it).setInitRand(rand() % 2);
+		    }
+		}
+	    }
+	  else
+	    {
+	      if((*it).getPos().x >= sizeX*0.5 && (*it).getStartPos() == 0)
+		{
+		  (*it).setPos(sf::Vector2f((*it).getPos().x-enemySpeed, (*it).getPos().y));
+		}
+	      else if ((*it).getStartPos() == 0)
+		{
+		  if ((*it).getPos().y >= sizeY/2*0.77)
+		    {
+		      (*it).setPos(sf::Vector2f((*it).getPos().x, (*it).getPos().y-enemySpeed));
+		    }
+		  else
+		    {
+		      (*it).setStartPos(1);
+		      (*it).setInitRand(rand() % 2);
+		    }
+		}
+	    }
+	  loop_check++;
+	}
+
+      for (auto it = enemyList.begin(); it != enemyList.end(); it++)
+	{
+	  if ((*it).getStartPos() == 1 && (*it).getChecker() == 0)
+	    {
+	      (*it).setChecker(1);
+	      if ((*it).getInitRand() == 0)
+		{
+		  (*it).setDir(1);
+		}
+	      else
+		{
+		  (*it).setDir(2);
+		}
+	    }
+	}
+
+      for (auto it = enemyList.begin(); it != enemyList.end(); it++)
+	{
+	  if ((*it).getDir() == 1) // left
+	    {
+	      (*it).setPos(sf::Vector2f((*it).getPos().x - enemySpeed, (*it).getPos().y));
+	    }
+	  else if ((*it).getDir() == 2) // right
+	    {
+	      (*it).setPos(sf::Vector2f((*it).getPos().x + enemySpeed, (*it).getPos().y));
+	    }
+	  else if ((*it).getDir() == 3) // up
+	    {
+	      (*it).setPos(sf::Vector2f((*it).getPos().x, (*it).getPos().y - enemySpeed));
+	    }
+	  else if ((*it).getDir() == 4) // down
+	    {
+	      (*it).setPos(sf::Vector2f((*it).getPos().x, (*it).getPos().y + enemySpeed));
+	    }
+	}
       
       if (counter == 2)
 	{
@@ -226,13 +321,63 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	      break;
 	    }
 	}
-      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
+
+      for (auto enemy_it = enemyList.begin(); enemy_it != enemyList.end(); enemy_it++)
 	{
-	  if (abs(std::get<0>(*it).getPosition().x - player1.getPos().x) <= 2 && abs(std::get<0>(*it).getPosition().y - player1.getPos().y) <= 2)
+	  for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 	    {
-	      std::cout << std::get<5>(*it) << "\n";
+	      if (abs(std::get<0>(*it).getPosition().x - (*enemy_it).getPos().x) <= 2 && abs(std::get<0>(*it).getPosition().y - (*enemy_it).getPos().y) <= 2 && dirChange1 == 0)
+		{
+		  dirChange2 = 1;
+		  std::vector<int> dirVector;
+		  if (std::get<1>(*it) == "Left")
+		    {
+		      dirVector.push_back(1);
+		    }
+		  if (std::get<2>(*it) == "Right")
+		    {
+		      dirVector.push_back(2);
+		    }
+		  if (std::get<3>(*it) == "Up")
+		    {
+		      dirVector.push_back(3);
+		    }
+		  if (std::get<4>(*it) == "Down")
+		    {
+		      dirVector.push_back(4);
+		    }
+		  int vSize = dirVector.size();
+		  srand(time(0));
+		  randDir = rand() % vSize;
+		  (*enemy_it).setDir(dirVector.at(randDir));
+	      
+		  //if (randDir == 1)
+		  //{
+		  //  enemy1.setDir(1);
+		  //}
+		  //else if (randDir == 2)
+		  //{
+		  //  enemy1.setDir(2);
+		  //}
+		  //else if (randDir == 3 && std::get<3>(*it) == "Up")
+		  //{
+		  //  enemy1.setDir(3);
+		  //}
+		  //else if (randDir == 4 && std::get<4>(*it) == "Down")
+		  //{
+		  //  enemy1.setDir(4);
+		  //enemy1.setPos(sf::Vector2f(enemy1.getPos().x, enemy1.getPos().y + enemySpeed));
+		  //}
+		}
 	    }
 	}
+      //for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
+      //{
+      //  if (abs(std::get<0>(*it).getPosition().x - player1.getPos().x) <= 2 && abs(std::get<0>(*it).getPosition().y - player1.getPos().y) <= 2)
+      //    {
+      //      std::cout << std::get<5>(*it) << "\n";
+      //    }
+      //}
       if (setControl == "Right")
 	{
 	  if (control == 2)
@@ -465,6 +610,19 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		}
 	    }
 	}
+      if (dirChange1 == 1)
+	{
+	  dirChange2 = 0;
+	}
+      else if (dirChange2 == 1)
+	{
+	  dirChange1 = 1;
+	}
+
+      if (dirChange2 == 0)
+	{
+	  dirChange1 = 0;
+	}
       window.clear(sf::Color::Black);
       for (auto it = mapShapes.begin(); it != mapShapes.end(); it++)
 	{
@@ -474,10 +632,14 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	{
 	  window.draw(std::get<0>(*it));
 	}
-      window.draw(enemy1.getSprite());
-      window.draw(enemy2.getSprite());
-      window.draw(enemy3.getSprite());
-      window.draw(enemy4.getSprite());
+      for (auto it = enemyList.begin(); it != enemyList.end(); it++)
+	{
+	  window.draw((*it).getSprite());
+	}
+      //window.draw(enemy1.getSprite());
+      //window.draw(enemy2.getSprite());
+      //window.draw(enemy3.getSprite());
+      //window.draw(enemy4.getSprite());
       window.draw(player1.getSprite());
       window.display();
     }
