@@ -6,7 +6,7 @@
 class Enemy
 {
 public:
-  Enemy(int state, sf::Sprite enemySprite, sf::Texture enemyTexture, int startPos, int direction);
+  Enemy(int state, sf::Sprite enemySprite, sf::Texture enemyTexture, int startPos, int direction, double startDelay);
   int getState();
   int getStartPos();
   void setStartPos(int num);
@@ -19,6 +19,9 @@ public:
   int getInitRand();
   int getChecker();
   void setChecker(int c);
+  double getStartDelay();
+  int getCrossCount();
+  void incCrossCount();
 private:
   int state;
   sf::Sprite enemySprite;
@@ -27,6 +30,8 @@ private:
   int direction;
   int initRand;
   int checker;
+  double startDelay;
+  int crossCount;
 };
 
 #endif

@@ -10,6 +10,7 @@
 #include <Functions.hpp>
 #include <cstdlib>
 #include <time.h>
+#include <chrono>
 
 int main()
 {
@@ -92,7 +93,6 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int temp = 0;
   int sizeX = window.getSize().x;
   int sizeY = window.getSize().y;
-  //int initRand = 0;
   int randDir = 0;
   int checker = 0;
   int dirChange1 = 0;
@@ -182,10 +182,10 @@ int Game(sf::RenderWindow &window, sf::Font font)
   mySprite.setPosition(window.getSize().x/2, window.getSize().y/2*1.5);
   
   Player player1(0, 3, 0, len, textureVector, mySprite, 2);
-  Enemy enemy1(1, Enemy1, E1, 0, 0);
-  Enemy enemy2(1, Enemy2, E2, 0, 0);
-  Enemy enemy3(1, Enemy3, E3, 0, 0);
-  Enemy enemy4(1, Enemy4, E4, 0, 0);
+  Enemy enemy1(1, Enemy1, E1, 0, 0, 0);
+  Enemy enemy2(1, Enemy2, E2, 0, 0, 2);
+  Enemy enemy3(1, Enemy3, E3, 0, 0, 4);
+  Enemy enemy4(1, Enemy4, E4, 0, 0, 6);
   std::vector<sf::ConvexShape> mapShapes = initMap(window);
   std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int>> turnPoints = turningPoints(window);
   std::vector<Enemy> enemyList;
@@ -214,10 +214,13 @@ int Game(sf::RenderWindow &window, sf::Font font)
   window.draw(readyText);
   window.display();
   sleep(3);
+  std::chrono::steady_clock sc;
+  auto start = sc.now();
+  auto current = sc.now();
       
   while(window.isOpen())
     {
-      //enemy1.setPos(sf::Vector2f(enemy1.getPos().x+enemySpeed, enemy1.getPos().y));
+      current = sc.now();
       sf::Vector2f spritePos = player1.getPos();
       sf::Vector2i mousePos = sf::Mouse::getPosition(window);
       sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -225,41 +228,45 @@ int Game(sf::RenderWindow &window, sf::Font font)
       loop_check = 0;
       for (auto it = enemyList.begin(); it != enemyList.end(); it++)
 	{
-	  if (loop_check <= 1)
+	  if (static_cast<std::chrono::duration<double>>(current-start).count() < it->getStartDelay())
 	    {
-	      if ((*it).getPos().x <= sizeX*0.5 && (*it).getStartPos() == 0)
+	      continue;
+	    }
+	  if (loop_check <= 1) // The first two enemies
+	    {
+	      if (it->getPos().x <= sizeX*0.5 && it->getStartPos() == 0)
 		{
-		  (*it).setPos(sf::Vector2f((*it).getPos().x+enemySpeed, (*it).getPos().y));
+		  it->setPos(sf::Vector2f((*it).getPos().x+enemySpeed, it->getPos().y));
 		}
-	      else if ((*it).getStartPos() == 0)
+	      else if (it->getStartPos() == 0)
 		{
-		  if ((*it).getPos().y >= sizeY/2*0.77)
+		  if (it->getPos().y >= sizeY/2*0.77)
 		    {
-		      (*it).setPos(sf::Vector2f((*it).getPos().x, (*it).getPos().y-enemySpeed));
+		      it->setPos(sf::Vector2f(it->getPos().x, it->getPos().y-enemySpeed));
 		    }
 		  else
 		    {
-		      (*it).setStartPos(1);
-		      (*it).setInitRand(rand() % 2);
+		      it->setStartPos(1);
+		      it->setInitRand(rand() % 2);
 		    }
 		}
 	    }
-	  else
+	  else // The last two enemies
 	    {
-	      if((*it).getPos().x >= sizeX*0.5 && (*it).getStartPos() == 0)
+	      if(it->getPos().x >= sizeX*0.5 && it->getStartPos() == 0)
 		{
-		  (*it).setPos(sf::Vector2f((*it).getPos().x-enemySpeed, (*it).getPos().y));
+		  it->setPos(sf::Vector2f((*it).getPos().x-enemySpeed, it->getPos().y));
 		}
-	      else if ((*it).getStartPos() == 0)
+	      else if (it->getStartPos() == 0)
 		{
-		  if ((*it).getPos().y >= sizeY/2*0.77)
+		  if (it->getPos().y >= sizeY/2*0.77)
 		    {
-		      (*it).setPos(sf::Vector2f((*it).getPos().x, (*it).getPos().y-enemySpeed));
+		      it->setPos(sf::Vector2f(it->getPos().x, it->getPos().y-enemySpeed));
 		    }
 		  else
 		    {
-		      (*it).setStartPos(1);
-		      (*it).setInitRand(rand() % 2);
+		      it->setStartPos(1);
+		      it->setInitRand(rand() % 2);
 		    }
 		}
 	    }
@@ -268,37 +275,37 @@ int Game(sf::RenderWindow &window, sf::Font font)
 
       for (auto it = enemyList.begin(); it != enemyList.end(); it++)
 	{
-	  if ((*it).getStartPos() == 1 && (*it).getChecker() == 0)
+	  if (it->getStartPos() == 1 && it->getChecker() == 0)
 	    {
-	      (*it).setChecker(1);
-	      if ((*it).getInitRand() == 0)
+	      it->setChecker(1);
+	      if (it->getInitRand() == 0)
 		{
-		  (*it).setDir(1);
+		  it->setDir(1);
 		}
 	      else
 		{
-		  (*it).setDir(2);
+		  it->setDir(2);
 		}
 	    }
 	}
 
       for (auto it = enemyList.begin(); it != enemyList.end(); it++)
 	{
-	  if ((*it).getDir() == 1) // left
+	  if (it->getDir() == 1) // left
 	    {
-	      (*it).setPos(sf::Vector2f((*it).getPos().x - enemySpeed, (*it).getPos().y));
+	      it->setPos(sf::Vector2f(it->getPos().x - enemySpeed, it->getPos().y));
 	    }
 	  else if ((*it).getDir() == 2) // right
 	    {
-	      (*it).setPos(sf::Vector2f((*it).getPos().x + enemySpeed, (*it).getPos().y));
+	      it->setPos(sf::Vector2f(it->getPos().x + enemySpeed, it->getPos().y));
 	    }
-	  else if ((*it).getDir() == 3) // up
+	  else if (it->getDir() == 3) // up
 	    {
-	      (*it).setPos(sf::Vector2f((*it).getPos().x, (*it).getPos().y - enemySpeed));
+	      it->setPos(sf::Vector2f(it->getPos().x, it->getPos().y - enemySpeed));
 	    }
 	  else if ((*it).getDir() == 4) // down
 	    {
-	      (*it).setPos(sf::Vector2f((*it).getPos().x, (*it).getPos().y + enemySpeed));
+	      it->setPos(sf::Vector2f(it->getPos().x, it->getPos().y + enemySpeed));
 	    }
 	}
       
@@ -326,8 +333,9 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	{
 	  for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 	    {
-	      if (abs(std::get<0>(*it).getPosition().x - (*enemy_it).getPos().x) <= 2 && abs(std::get<0>(*it).getPosition().y - (*enemy_it).getPos().y) <= 2 && dirChange1 == 0)
+	      if (abs(std::get<0>(*it).getPosition().x - enemy_it->getPos().x) <= 4 && abs(std::get<0>(*it).getPosition().y - enemy_it->getPos().y) <= 4 && dirChange1 == 0)
 		{
+		  enemy_it->incCrossCount();
 		  dirChange2 = 1;
 		  std::vector<int> dirVector;
 		  if (std::get<1>(*it) == "Left")
@@ -347,37 +355,12 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		      dirVector.push_back(4);
 		    }
 		  int vSize = dirVector.size();
-		  srand(time(0));
+		  srand(time(0) + enemy_it->getCrossCount());
 		  randDir = rand() % vSize;
-		  (*enemy_it).setDir(dirVector.at(randDir));
-	      
-		  //if (randDir == 1)
-		  //{
-		  //  enemy1.setDir(1);
-		  //}
-		  //else if (randDir == 2)
-		  //{
-		  //  enemy1.setDir(2);
-		  //}
-		  //else if (randDir == 3 && std::get<3>(*it) == "Up")
-		  //{
-		  //  enemy1.setDir(3);
-		  //}
-		  //else if (randDir == 4 && std::get<4>(*it) == "Down")
-		  //{
-		  //  enemy1.setDir(4);
-		  //enemy1.setPos(sf::Vector2f(enemy1.getPos().x, enemy1.getPos().y + enemySpeed));
-		  //}
+		  enemy_it->setDir(dirVector.at(randDir));
 		}
 	    }
 	}
-      //for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
-      //{
-      //  if (abs(std::get<0>(*it).getPosition().x - player1.getPos().x) <= 2 && abs(std::get<0>(*it).getPosition().y - player1.getPos().y) <= 2)
-      //    {
-      //      std::cout << std::get<5>(*it) << "\n";
-      //    }
-      //}
       if (setControl == "Right")
 	{
 	  if (control == 2)
@@ -450,7 +433,6 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		}
 	    }
 	}
-      //enemy1.setPos(sf::Vector2f(enemy1.getPos().x+enemySpeed, enemy1.getPos().y));
       if(control == 1) // Right
 	{
 	  if (temp == 0)
@@ -577,10 +559,10 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			{
 			  window.draw(std::get<0>(*it));
 			}
-		      window.draw(enemy1.getSprite());
-		      window.draw(enemy2.getSprite());
-		      window.draw(enemy3.getSprite());
-		      window.draw(enemy4.getSprite());
+		      for (auto it = enemyList.begin(); it != enemyList.end(); it++)
+			{
+			  window.draw(it->getSprite());
+			}
 		      window.draw(player1.getSprite());
 		      window.draw(menuButton);
 		      window.draw(exitButton);
@@ -634,12 +616,8 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	}
       for (auto it = enemyList.begin(); it != enemyList.end(); it++)
 	{
-	  window.draw((*it).getSprite());
+	  window.draw(it->getSprite());
 	}
-      //window.draw(enemy1.getSprite());
-      //window.draw(enemy2.getSprite());
-      //window.draw(enemy3.getSprite());
-      //window.draw(enemy4.getSprite());
       window.draw(player1.getSprite());
       window.display();
     }

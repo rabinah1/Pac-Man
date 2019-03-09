@@ -1,6 +1,6 @@
 #include <Enemy.hpp>
 
-Enemy::Enemy(int st, sf::Sprite enemySp, sf::Texture eTexture, int stP, int Dir)
+Enemy::Enemy(int st, sf::Sprite enemySp, sf::Texture eTexture, int stP, int Dir, double sDel)
 {
   state = st;
   enemySprite = enemySp;
@@ -9,6 +9,23 @@ Enemy::Enemy(int st, sf::Sprite enemySp, sf::Texture eTexture, int stP, int Dir)
   direction = Dir;
   initRand = 0;
   checker = 0;
+  startDelay = sDel;
+  crossCount = 0;
+}
+
+int Enemy::getCrossCount()
+{
+  return crossCount;
+}
+
+void Enemy::incCrossCount()
+{
+  crossCount = crossCount + 1;
+}
+
+double Enemy::getStartDelay()
+{
+  return startDelay;
 }
 
 int Enemy::getChecker()
