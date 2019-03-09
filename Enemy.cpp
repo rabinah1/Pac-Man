@@ -11,6 +11,22 @@ Enemy::Enemy(int st, sf::Sprite enemySp, sf::Texture eTexture, int stP, int Dir,
   checker = 0;
   startDelay = sDel;
   crossCount = 0;
+  dirCounter = 0;
+}
+
+void Enemy::resetDirCounter()
+{
+  dirCounter = 0;
+}
+
+int Enemy::getDirCounter()
+{
+  return dirCounter;
+}
+
+void Enemy::incDirCounter()
+{
+  dirCounter = dirCounter + 1;
 }
 
 int Enemy::getCrossCount()

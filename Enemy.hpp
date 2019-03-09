@@ -22,6 +22,9 @@ public:
   double getStartDelay();
   int getCrossCount();
   void incCrossCount();
+  int getDirCounter();
+  void incDirCounter();
+  void resetDirCounter();
 private:
   int state;
   sf::Sprite enemySprite;
@@ -32,6 +35,7 @@ private:
   int checker;
   double startDelay;
   int crossCount;
+  int dirCounter;
 };
 
 #endif

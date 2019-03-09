@@ -95,8 +95,6 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int sizeY = window.getSize().y;
   int randDir = 0;
   int checker = 0;
-  int dirChange1 = 0;
-  int dirChange2 = 0;
   int loop_check = 0;
   std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int> currPoint;
   sf::Event event;
@@ -226,6 +224,15 @@ int Game(sf::RenderWindow &window, sf::Font font)
       sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
       loop_check = 0;
+
+      for (auto it = enemyList.begin(); it != enemyList.end(); it++)
+	{
+	  if (it->getDirCounter() <= 4)
+	    {
+	      it->incDirCounter();
+	    }
+	}
+      
       for (auto it = enemyList.begin(); it != enemyList.end(); it++)
 	{
 	  if (static_cast<std::chrono::duration<double>>(current-start).count() < it->getStartDelay())
@@ -333,10 +340,10 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	{
 	  for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 	    {
-	      if (abs(std::get<0>(*it).getPosition().x - enemy_it->getPos().x) <= 4 && abs(std::get<0>(*it).getPosition().y - enemy_it->getPos().y) <= 4 && dirChange1 == 0)
+	      if (abs(std::get<0>(*it).getPosition().x - enemy_it->getPos().x) <= 4 && abs(std::get<0>(*it).getPosition().y - enemy_it->getPos().y) <= 4 && enemy_it->getDirCounter() > 3)
 		{
+		  enemy_it->resetDirCounter();
 		  enemy_it->incCrossCount();
-		  dirChange2 = 1;
 		  std::vector<int> dirVector;
 		  if (std::get<1>(*it) == "Left")
 		    {
@@ -591,19 +598,6 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		  setControl = "Right";
 		}
 	    }
-	}
-      if (dirChange1 == 1)
-	{
-	  dirChange2 = 0;
-	}
-      else if (dirChange2 == 1)
-	{
-	  dirChange1 = 1;
-	}
-
-      if (dirChange2 == 0)
-	{
-	  dirChange1 = 0;
 	}
       window.clear(sf::Color::Black);
       for (auto it = mapShapes.begin(); it != mapShapes.end(); it++)
