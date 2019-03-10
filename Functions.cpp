@@ -1254,3 +1254,61 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   mapShapes.push_back(conv30);
   return mapShapes;
 }
+
+int gameOver(sf::RenderWindow &window, sf::Font font)
+{
+  sf::Text MenuButton("Menu", font, 100);
+  sf::Text ExitButton("Exit", font, 100);
+  sf::Text TitleText("Game over!", font, 200);
+  sf::Event event;
+  MenuButton.setFillColor(sf::Color::Black);
+  ExitButton.setFillColor(sf::Color::Black);
+  TitleText.setFillColor(sf::Color::Red);
+  MenuButton.setPosition(window.getSize().x/2-MenuButton.getLocalBounds().width/2, window.getSize().y-MenuButton.getLocalBounds().height*5);
+  ExitButton.setPosition(window.getSize().x/2-ExitButton.getLocalBounds().width/2, window.getSize().y-ExitButton.getLocalBounds().height*2);
+  TitleText.setPosition(window.getSize().x/2-TitleText.getLocalBounds().width/2, window.getSize().y-TitleText.getLocalBounds().height*7);
+
+  window.setFramerateLimit(60);
+
+  while(window.isOpen())
+    {
+      sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+      sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+      if (MenuButton.getGlobalBounds().contains(mousePosF))
+	{
+	  MenuButton.setFillColor(sf::Color::Blue);
+	}
+      else if (ExitButton.getGlobalBounds().contains(mousePosF))
+	{
+	  ExitButton.setFillColor(sf::Color::Blue);
+	}
+      else
+	{
+	  MenuButton.setFillColor(sf::Color::Black);
+	  ExitButton.setFillColor(sf::Color::Black);
+	}
+
+      while (window.pollEvent(event))
+	{
+	  switch(event.type)
+	    {
+	    case sf::Event::MouseButtonPressed:
+	      if (MenuButton.getGlobalBounds().contains(mousePosF))
+		{
+		  return 0;
+		  break;
+		}
+	      else if (ExitButton.getGlobalBounds().contains(mousePosF))
+		{
+		  return 1;
+		  break;
+		}
+	    }
+	}
+      window.clear(sf::Color::White);
+      window.draw(MenuButton);
+      window.draw(ExitButton);
+      window.draw(TitleText);
+      window.display();
+    }
+}

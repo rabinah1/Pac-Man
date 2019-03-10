@@ -96,6 +96,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int randDir = 0;
   int checker = 0;
   int loop_check = 0;
+  int endRet = 0;
   std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int> currPoint;
   sf::Event event;
   sf::Texture pac1;
@@ -222,6 +223,21 @@ int Game(sf::RenderWindow &window, sf::Font font)
       sf::Vector2f spritePos = player1.getPos();
       sf::Vector2i mousePos = sf::Mouse::getPosition(window);
       sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+      for (auto it = enemyList.begin(); it != enemyList.end(); it++)
+	{
+	  if (it->getSprite().getGlobalBounds().intersects(player1.getSprite().getGlobalBounds()))
+	    {
+	      for (int h = 0; h < 72; h++)
+		{
+		  delete [] AdjMat[h];
+		}
+	      delete [] AdjMat;
+	      AdjMat = 0;
+	      endRet = gameOver(window, font);
+	      return endRet;
+	    }
+	}
 
       loop_check = 0;
 
