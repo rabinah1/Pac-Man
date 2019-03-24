@@ -187,6 +187,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   Enemy enemy4(1, Enemy4, E4, 0, 0, 6);
   std::vector<sf::ConvexShape> mapShapes = initMap(window);
   std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int>> turnPoints = turningPoints(window);
+  std::vector<sf::CircleShape> collectPoints = collPoints(window);
   std::vector<Enemy> enemyList;
   enemyList.push_back(enemy1);
   enemyList.push_back(enemy2);
@@ -201,10 +202,10 @@ int Game(sf::RenderWindow &window, sf::Font font)
     {
       window.draw(*it);
     }
-  for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
-    {
-      window.draw(std::get<0>(*it));
-    }
+  for (auto it = collectPoints.begin(); it != collectPoints.end(); it++)
+  {
+    window.draw(*it);
+  }
   window.draw(enemy1.getSprite());
   window.draw(enemy2.getSprite());
   window.draw(enemy3.getSprite());
@@ -575,13 +576,13 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			}
 		      window.clear(sf::Color::Black);
 		      for (auto it = mapShapes.begin(); it != mapShapes.end(); it++)
-			{
-			  window.draw(*it);
-			}
-		      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
-			{
-			  window.draw(std::get<0>(*it));
-			}
+		      {
+			window.draw(*it);
+		      }
+		      for (auto it = collectPoints.begin(); it != collectPoints.end(); it++)
+		      {
+			window.draw(*it);
+		      }
 		      for (auto it = enemyList.begin(); it != enemyList.end(); it++)
 			{
 			  window.draw(it->getSprite());
@@ -620,10 +621,10 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	{
 	  window.draw(*it);
 	}
-      for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
-	{
-	  window.draw(std::get<0>(*it));
-	}
+      for (auto it = collectPoints.begin(); it != collectPoints.end(); it++)
+      {
+	window.draw(*it);
+      }
       for (auto it = enemyList.begin(); it != enemyList.end(); it++)
 	{
 	  window.draw(it->getSprite());

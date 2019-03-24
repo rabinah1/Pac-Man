@@ -17,5 +17,6 @@ int minDistance(int dist[], bool sptSet[]);
 void printSolution(int dist[], int n);
 void dijkstra(int **graph, int src);
 int gameOver(sf::RenderWindow &window, sf::Font font);
+std::vector<sf::CircleShape> collPoints(sf::RenderWindow &window);
 
 #endif

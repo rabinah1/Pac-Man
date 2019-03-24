@@ -261,6 +261,46 @@ int **createAdjacency()
   return Adj;
 }
 
+std::vector<sf::CircleShape> collPoints(sf::RenderWindow &window)
+{
+  std::vector<sf::CircleShape> collects;
+  int sizeX = window.getSize().x;
+  int sizeY = window.getSize().y;
+
+  sf::CircleShape collect1(5);
+  sf::CircleShape collect2(5);
+  sf::CircleShape collect3(5);
+  sf::CircleShape collect4(5);
+  sf::CircleShape collect5(5);
+
+  collect1.setFillColor(sf::Color::White);
+  collect1.setOrigin(collect1.getOrigin().x+collect1.getLocalBounds().width/2, collect1.getOrigin().y+collect1.getLocalBounds().height/2);
+  collect1.setPosition(sizeX/2*0.65, sizeY/2*0.1);
+
+  collect2.setFillColor(sf::Color::White);
+  collect2.setOrigin(collect2.getOrigin().x+collect2.getLocalBounds().width/2, collect2.getOrigin().y+collect2.getLocalBounds().height/2);
+  collect2.setPosition(sizeX/2*0.45, sizeY/2*0.1);
+
+  collect3.setFillColor(sf::Color::White);
+  collect3.setOrigin(collect3.getOrigin().x+collect3.getLocalBounds().width/2, collect3.getOrigin().y+collect3.getLocalBounds().height/2);
+  collect3.setPosition(sizeX/2*0.55, sizeY/2*0.1);
+
+  collect4.setFillColor(sf::Color::White);
+  collect4.setOrigin(collect4.getOrigin().x+collect4.getLocalBounds().width/2, collect4.getOrigin().y+collect4.getLocalBounds().height/2);
+  collect4.setPosition(sizeX/2*0.75, sizeY/2*0.1);
+
+  collect5.setFillColor(sf::Color::White);
+  collect5.setOrigin(collect5.getOrigin().x+collect5.getLocalBounds().width/2, collect5.getOrigin().y+collect5.getLocalBounds().height/2);
+  collect5.setPosition(sizeX/2*0.85, sizeY/2*0.1);
+
+  collects.push_back(collect1);
+  collects.push_back(collect2);
+  collects.push_back(collect3);
+  collects.push_back(collect4);
+  collects.push_back(collect5);
+  return collects;
+}
+
 std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int>> turningPoints(sf::RenderWindow &window)
 {
   std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int>> points;
