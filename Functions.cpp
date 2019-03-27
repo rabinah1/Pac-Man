@@ -272,10 +272,31 @@ std::vector<sf::CircleShape> collPoints(sf::RenderWindow &window)
   sf::CircleShape collect3(5);
   sf::CircleShape collect4(5);
   sf::CircleShape collect5(5);
+  sf::CircleShape collect6(5);
+  sf::CircleShape collect7(5);
+  sf::CircleShape collect8(5);
+  sf::CircleShape collect9(5);
+  sf::CircleShape collect10(5);
+  sf::CircleShape collect11(5);
+  sf::CircleShape collect12(5);
+  sf::CircleShape collect13(5);
+  sf::CircleShape collect14(5);
+  sf::CircleShape collect15(5);
+  sf::CircleShape collect16(5);
+  sf::CircleShape collect17(5);
+  sf::CircleShape collect18(5);
+  sf::CircleShape collect19(5);
+  sf::CircleShape collect20(5);
+  sf::CircleShape collect21(5);
+  sf::CircleShape collect22(5);
+  sf::CircleShape collect23(5);
+  sf::CircleShape collect24(5);
+  sf::CircleShape collect25(5);
+  sf::CircleShape collect26(5);
 
   collect1.setFillColor(sf::Color::White);
   collect1.setOrigin(collect1.getOrigin().x+collect1.getLocalBounds().width/2, collect1.getOrigin().y+collect1.getLocalBounds().height/2);
-  collect1.setPosition(sizeX/2*0.65, sizeY/2*0.1);
+  collect1.setPosition(sizeX/2*0.69, sizeY/2*0.1);
 
   collect2.setFillColor(sf::Color::White);
   collect2.setOrigin(collect2.getOrigin().x+collect2.getLocalBounds().width/2, collect2.getOrigin().y+collect2.getLocalBounds().height/2);
@@ -283,21 +304,126 @@ std::vector<sf::CircleShape> collPoints(sf::RenderWindow &window)
 
   collect3.setFillColor(sf::Color::White);
   collect3.setOrigin(collect3.getOrigin().x+collect3.getLocalBounds().width/2, collect3.getOrigin().y+collect3.getLocalBounds().height/2);
-  collect3.setPosition(sizeX/2*0.55, sizeY/2*0.1);
+  collect3.setPosition(sizeX/2*0.57, sizeY/2*0.1);
 
   collect4.setFillColor(sf::Color::White);
   collect4.setOrigin(collect4.getOrigin().x+collect4.getLocalBounds().width/2, collect4.getOrigin().y+collect4.getLocalBounds().height/2);
-  collect4.setPosition(sizeX/2*0.75, sizeY/2*0.1);
+  collect4.setPosition(sizeX/2*0.81, sizeY/2*0.1);
 
   collect5.setFillColor(sf::Color::White);
   collect5.setOrigin(collect5.getOrigin().x+collect5.getLocalBounds().width/2, collect5.getOrigin().y+collect5.getLocalBounds().height/2);
-  collect5.setPosition(sizeX/2*0.85, sizeY/2*0.1);
+  collect5.setPosition(sizeX/2*0.93, sizeY/2*0.1);
+
+  collect6.setFillColor(sf::Color::White);
+  collect6.setOrigin(collect6.getOrigin().x+collect6.getLocalBounds().width/2, collect6.getOrigin().y+collect6.getLocalBounds().height/2);
+  collect6.setPosition(sizeX/2*1.05, sizeY/2*0.1);
+
+  collect7.setFillColor(sf::Color::White);
+  collect7.setOrigin(collect7.getOrigin().x+collect7.getLocalBounds().width/2, collect7.getOrigin().y+collect7.getLocalBounds().height/2);
+  collect7.setPosition(sizeX/2*1.17, sizeY/2*0.1);
+
+  collect8.setFillColor(sf::Color::White);
+  collect8.setOrigin(collect8.getOrigin().x+collect8.getLocalBounds().width/2, collect8.getOrigin().y+collect8.getLocalBounds().height/2);
+  collect8.setPosition(sizeX/2*1.29, sizeY/2*0.1);
+
+  collect9.setFillColor(sf::Color::White);
+  collect9.setOrigin(collect9.getOrigin().x+collect9.getLocalBounds().width/2, collect9.getOrigin().y+collect9.getLocalBounds().height/2);
+  collect9.setPosition(sizeX/2*1.41, sizeY/2*0.1);
+
+  collect10.setFillColor(sf::Color::White);
+  collect10.setOrigin(collect10.getOrigin().x+collect10.getLocalBounds().width/2, collect10.getOrigin().y+collect10.getLocalBounds().height/2);
+  collect10.setPosition(sizeX/2*1.54, sizeY/2*0.1);
+
+  collect11.setFillColor(sf::Color::White);
+  collect11.setOrigin(collect11.getOrigin().x+collect11.getLocalBounds().width/2, collect11.getOrigin().y+collect11.getLocalBounds().height/2);
+  collect11.setPosition(sizeX/2*0.69, sizeY/2*0.4);
+
+  collect12.setFillColor(sf::Color::White);
+  collect12.setOrigin(collect12.getOrigin().x+collect12.getLocalBounds().width/2, collect12.getOrigin().y+collect12.getLocalBounds().height/2);
+  collect12.setPosition(sizeX/2*0.45, sizeY/2*0.4);
+
+  collect13.setFillColor(sf::Color::White);
+  collect13.setOrigin(collect13.getOrigin().x+collect13.getLocalBounds().width/2, collect13.getOrigin().y+collect13.getLocalBounds().height/2);
+  collect13.setPosition(sizeX/2*0.57, sizeY/2*0.4);
+
+  collect14.setFillColor(sf::Color::White);
+  collect14.setOrigin(collect14.getOrigin().x+collect14.getLocalBounds().width/2, collect14.getOrigin().y+collect14.getLocalBounds().height/2);
+  collect14.setPosition(sizeX/2*0.81, sizeY/2*0.4);
+
+  collect15.setFillColor(sf::Color::White);
+  collect15.setOrigin(collect15.getOrigin().x+collect15.getLocalBounds().width/2, collect15.getOrigin().y+collect15.getLocalBounds().height/2);
+  collect15.setPosition(sizeX/2*0.93, sizeY/2*0.4);
+
+  collect16.setFillColor(sf::Color::White);
+  collect16.setOrigin(collect16.getOrigin().x+collect16.getLocalBounds().width/2, collect16.getOrigin().y+collect16.getLocalBounds().height/2);
+  collect16.setPosition(sizeX/2*1.05, sizeY/2*0.4);
+
+  collect17.setFillColor(sf::Color::White);
+  collect17.setOrigin(collect17.getOrigin().x+collect17.getLocalBounds().width/2, collect17.getOrigin().y+collect17.getLocalBounds().height/2);
+  collect17.setPosition(sizeX/2*1.17, sizeY/2*0.4);
+
+  collect18.setFillColor(sf::Color::White);
+  collect18.setOrigin(collect18.getOrigin().x+collect18.getLocalBounds().width/2, collect18.getOrigin().y+collect18.getLocalBounds().height/2);
+  collect18.setPosition(sizeX/2*1.29, sizeY/2*0.4);
+
+  collect19.setFillColor(sf::Color::White);
+  collect19.setOrigin(collect19.getOrigin().x+collect19.getLocalBounds().width/2, collect19.getOrigin().y+collect19.getLocalBounds().height/2);
+  collect19.setPosition(sizeX/2*1.41, sizeY/2*0.4);
+
+  collect20.setFillColor(sf::Color::White);
+  collect20.setOrigin(collect20.getOrigin().x+collect20.getLocalBounds().width/2, collect20.getOrigin().y+collect20.getLocalBounds().height/2);
+  collect20.setPosition(sizeX/2*1.54, sizeY/2*0.4);
+
+  collect21.setFillColor(sf::Color::White);
+  collect21.setOrigin(collect21.getOrigin().x+collect21.getLocalBounds().width/2, collect21.getOrigin().y+collect21.getLocalBounds().height/2);
+  collect21.setPosition(sizeX/2*0.45, sizeY/2*0.25);
+
+  collect22.setFillColor(sf::Color::White);
+  collect22.setOrigin(collect22.getOrigin().x+collect22.getLocalBounds().width/2, collect22.getOrigin().y+collect22.getLocalBounds().height/2);
+  collect22.setPosition(sizeX/2*0.93, sizeY/2*0.25);
+
+  collect23.setFillColor(sf::Color::White);
+  collect23.setOrigin(collect23.getOrigin().x+collect23.getLocalBounds().width/2, collect23.getOrigin().y+collect23.getLocalBounds().height/2);
+  collect23.setPosition(sizeX/2*1.05, sizeY/2*0.25);
+
+  collect24.setFillColor(sf::Color::White);
+  collect24.setOrigin(collect24.getOrigin().x+collect24.getLocalBounds().width/2, collect24.getOrigin().y+collect24.getLocalBounds().height/2);
+  collect24.setPosition(sizeX/2*1.54, sizeY/2*0.25);
+
+  collect25.setFillColor(sf::Color::White);
+  collect25.setOrigin(collect25.getOrigin().x+collect25.getLocalBounds().width/2, collect25.getOrigin().y+collect25.getLocalBounds().height/2);
+  collect25.setPosition(sizeX/2*0.65, sizeY/2*0.25);
+
+  collect26.setFillColor(sf::Color::White);
+  collect26.setOrigin(collect26.getOrigin().x+collect26.getLocalBounds().width/2, collect26.getOrigin().y+collect26.getLocalBounds().height/2);
+  collect26.setPosition(sizeX/2*1.34, sizeY/2*0.25);
 
   collects.push_back(collect1);
   collects.push_back(collect2);
   collects.push_back(collect3);
   collects.push_back(collect4);
   collects.push_back(collect5);
+  collects.push_back(collect6);
+  collects.push_back(collect7);
+  collects.push_back(collect8);
+  collects.push_back(collect9);
+  collects.push_back(collect10);
+  collects.push_back(collect11);
+  collects.push_back(collect12);
+  collects.push_back(collect13);
+  collects.push_back(collect14);
+  collects.push_back(collect15);
+  collects.push_back(collect16);
+  collects.push_back(collect17);
+  collects.push_back(collect18);
+  collects.push_back(collect19);
+  collects.push_back(collect20);
+  collects.push_back(collect21);
+  collects.push_back(collect22);
+  collects.push_back(collect23);
+  collects.push_back(collect24);
+  collects.push_back(collect25);
+  collects.push_back(collect26);
   return collects;
 }
 
