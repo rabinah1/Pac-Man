@@ -37,6 +37,12 @@ public:
   void setLastPlayerCoord_x(float x_coord);
   float getLastPlayerCoord_y();
   void setLastPlayerCoord_y(float y_coord);
+  int getXCoordFlag();
+  void setXCoordFlag(int x_flag);
+  int getYCoordFlag();
+  void setYCoordFlag(int y_flag);
+  void updatePoint(sf::CircleShape tp);
+  sf::CircleShape getPoint();
 private:
   int state;
   sf::Sprite enemySprite;
@@ -52,6 +58,9 @@ private:
   int visible_flag;
   float last_player_coord_x;
   float last_player_coord_y;
+  int x_coord_flag;
+  int y_coord_flag;
+  sf::CircleShape prev_turn_point;
   sf::RectangleShape line_up;
   sf::RectangleShape line_right;
   sf::RectangleShape line_down;

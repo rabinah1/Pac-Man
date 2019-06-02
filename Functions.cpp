@@ -1572,8 +1572,8 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv5.setPoint(0, sf::Vector2f(0, 0));
   conv5.setPoint(1, sf::Vector2f(0+20, 0));
   conv5.setPoint(2, sf::Vector2f(0+20, 0-100));
-  conv5.setPoint(3, sf::Vector2f(0+100, 0-100));
-  conv5.setPoint(4, sf::Vector2f(0+100, 0-120));
+  conv5.setPoint(3, sf::Vector2f(0+120, 0-100));
+  conv5.setPoint(4, sf::Vector2f(0+120, 0-120));
   conv5.setPoint(5, sf::Vector2f(0, 0-120));
   conv5.setOutlineColor(sf::Color::Blue);
   conv5.setFillColor(sf::Color::Transparent);
@@ -1778,8 +1778,8 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
   conv23.setPoint(0, sf::Vector2f(0, 0));
   conv23.setPoint(1, sf::Vector2f(0+20, 0));
   conv23.setPoint(2, sf::Vector2f(0+20, 0-100));
-  conv23.setPoint(3, sf::Vector2f(0+100, 0-100));
-  conv23.setPoint(4, sf::Vector2f(0+100, 0-120));
+  conv23.setPoint(3, sf::Vector2f(0+120, 0-100));
+  conv23.setPoint(4, sf::Vector2f(0+120, 0-120));
   conv23.setPoint(5, sf::Vector2f(0, 0-120));
   conv23.setOutlineColor(sf::Color::Blue);
   conv23.setFillColor(sf::Color::Transparent);
@@ -1838,23 +1838,23 @@ std::vector<sf::ConvexShape> initMap(sf::RenderWindow &window)
 
   conv29.setPointCount(4);
   conv29.setPoint(0, sf::Vector2f(0, 0));
-  conv29.setPoint(1, sf::Vector2f(0+100, 0));
-  conv29.setPoint(2, sf::Vector2f(0+100, 0+20));
+  conv29.setPoint(1, sf::Vector2f(0+110, 0));
+  conv29.setPoint(2, sf::Vector2f(0+110, 0+20));
   conv29.setPoint(3, sf::Vector2f(0, 0+20));
   conv29.setOutlineColor(sf::Color::Blue);
   conv29.setFillColor(sf::Color::Transparent);
   conv29.setOutlineThickness(4);
-  conv29.setPosition(sizeX*0.747, sizeY*0.6);
+  conv29.setPosition(sizeX*0.742, sizeY*0.6);
 
   conv30.setPointCount(4);
   conv30.setPoint(0, sf::Vector2f(0, 0));
-  conv30.setPoint(1, sf::Vector2f(0+100, 0));
-  conv30.setPoint(2, sf::Vector2f(0+100, 0+20));
+  conv30.setPoint(1, sf::Vector2f(0+110, 0));
+  conv30.setPoint(2, sf::Vector2f(0+110, 0+20));
   conv30.setPoint(3, sf::Vector2f(0, 0+20));
   conv30.setOutlineColor(sf::Color::Blue);
   conv30.setFillColor(sf::Color::Transparent);
   conv30.setOutlineThickness(4);
-  conv30.setPosition(sizeX*0.747, sizeY*0.78);
+  conv30.setPosition(sizeX*0.742, sizeY*0.78);
   
   mapShapes.push_back(conv1);
   mapShapes.push_back(conv2);

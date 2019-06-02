@@ -15,6 +15,9 @@ Enemy::Enemy(int st, sf::Sprite enemySp, sf::Texture eTexture, int stP, int Dir,
   visible_flag = 0;
   last_player_coord_x = 0.0;
   last_player_coord_y = 0.0;
+  x_coord_flag = 0;
+  y_coord_flag = 0;
+  //prev_turn_point = NULL;
   //line_right.setSize(sf::Vector2f(2000, 5));
   //line_right.rotate(0);
   //line_down.setSize(sf::Vector2f(2000, 5));
@@ -23,6 +26,26 @@ Enemy::Enemy(int st, sf::Sprite enemySp, sf::Texture eTexture, int stP, int Dir,
   //line_left.rotate(180);
   //line_up.setSize(sf::Vector2f(2000, 5));
   //line_up.rotate(270);
+}
+
+int Enemy::getXCoordFlag()
+{
+  return x_coord_flag;
+}
+
+void Enemy::setXCoordFlag(int x_flag)
+{
+  x_coord_flag = x_flag;
+}
+
+int Enemy::getYCoordFlag()
+{
+  return y_coord_flag;
+}
+
+void Enemy::setYCoordFlag(int y_flag)
+{
+  y_coord_flag = y_flag;
 }
 
 void Enemy::setLastPlayerCoord_y(float y_coord)
@@ -153,6 +176,16 @@ int Enemy::getDir()
 int Enemy::getNextDir()
 {
   return nextDirection;
+}
+
+void Enemy::updatePoint(sf::CircleShape tp)
+{
+  prev_turn_point = tp;
+}
+
+sf::CircleShape Enemy::getPoint()
+{
+  return prev_turn_point;
 }
 
 void Enemy::initLines()

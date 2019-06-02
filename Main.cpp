@@ -359,24 +359,32 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			  it->setVisibleFlag(1);
 			  it->setNextDir(1);
 			  it->setLastPlayerCoord_x(player1.getPos().x);
+			  it->setXCoordFlag(1);
+			  it->setYCoordFlag(0);
 			}
 		      else if (std::get<0>(*temp) == 2) // up
 			{
 			  it->setVisibleFlag(1);
 			  it->setNextDir(3);
 			  it->setLastPlayerCoord_y(player1.getPos().y);
+			  it->setYCoordFlag(1);
+			  it->setXCoordFlag(0);
 			}
 		      else if (std::get<0>(*temp) == 3) // right
 			{
 			  it->setVisibleFlag(1);
 			  it->setNextDir(2);
 			  it->setLastPlayerCoord_x(player1.getPos().x);
+			  it->setXCoordFlag(1);
+			  it->setYCoordFlag(0);
 			}
 		      else if (std::get<0>(*temp) == 4) // down
 			{
 			  it->setVisibleFlag(1);
 			  it->setNextDir(4);
 			  it->setLastPlayerCoord_y(player1.getPos().y);
+			  it->setYCoordFlag(1);
+			  it->setXCoordFlag(0);
 			}
 		    }
 		}
@@ -514,6 +522,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	      if (abs(std::get<0>(*it).getPosition().x - enemy_it->getPos().x) <= 4 && abs(std::get<0>(*it).getPosition().y - enemy_it->getPos().y) <= 4 && enemy_it->getDirCounter() > 3 &&
 		  enemy_it->getVisibleFlag() == 0)
 		{
+		  enemy_it->updatePoint(std::get<0>(*it));
 		  enemy_it->resetDirCounter();
 		  enemy_it->incCrossCount();
 		  std::vector<int> dirVector;
@@ -538,15 +547,63 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		  randDir = rand() % vSize;
 		  enemy_it->setDir(dirVector.at(randDir));
 		}
+	      
 	      else if (abs(std::get<0>(*it).getPosition().x - enemy_it->getPos().x) <= 4 && abs(std::get<0>(*it).getPosition().y - enemy_it->getPos().y) <= 4 && enemy_it->getDirCounter() > 3 &&
 		       enemy_it->getVisibleFlag() == 1)
 		{
-		  if (abs(enemy_it->getLastPlayerCoord_x() - enemy_it->getPos().x) <= 4 || abs(enemy_it->getLastPlayerCoord_y() - enemy_it->getPos().y) <= 4)
+		  enemy_it->updatePoint(std::get<0>(*it));
+		  if (enemy_it->getXCoordFlag() == 1)
 		    {
-		      enemy_it->setVisibleFlag(0);
+		      if (abs(enemy_it->getLastPlayerCoord_x() - enemy_it->getPos().x) <= 4)
+			{
+			  enemy_it->setVisibleFlag(0);
+			}
+		    }
+		  else if (enemy_it->getYCoordFlag() == 1)
+		    {
+		      if (abs(enemy_it->getLastPlayerCoord_y() - enemy_it->getPos().y) <= 4)
+			{
+			  enemy_it->setVisibleFlag(0);
+			}
 		    }
 		  enemy_it->setDir(enemy_it->getNextDir());
 		}
+
+	      else if (enemy_it->getVisibleFlag() == 1 && enemy_it->getDirCounter() > 3)
+		{
+		  //enemy_it->resetDirCounter();
+		  float right_dist = enemy_it->getPos().x - enemy_it->getPoint().getPosition().x;
+		  float left_dist = enemy_it->getPoint().getPosition().x - enemy_it->getPos().x;
+		  float up_dist = enemy_it->getPoint().getPosition().y - enemy_it->getPos().y;
+		  float down_dist = enemy_it->getPos().y - enemy_it->getPoint().getPosition().y;
+		  if (right_dist > left_dist && right_dist > up_dist && right_dist > down_dist && enemy1.getDir() == 2)
+		    {
+		      enemy_it->setDir(1);
+		    }
+		  else if (left_dist > right_dist && left_dist > up_dist && left_dist > down_dist && enemy1.getDir() == 1)
+		    {
+		      enemy_it->setDir(2);
+		    }
+		  else if (up_dist > right_dist && up_dist > left_dist && up_dist > down_dist && enemy1.getDir() == 3)
+		    {
+		      enemy_it->setDir(4);
+		    }
+		  else if (down_dist > left_dist && down_dist > right_dist && down_dist > up_dist && enemy1.getDir() == 4)
+		    {
+		      enemy_it->setDir(3);
+		    }
+		}
+	      
+	      //else if (enemy_it->getDirCounter() > 3 && enemy_it->getVisibleFlag() == 1 && ((enemy_it->getDir() == 3 || enemy_it->getDir() == 4) &&
+	      //									    (enemy_it->getNextDir() == 3|| enemy_it->getNextDir() == 4)) &&
+	      //       ((enemy_it->getDir() == 1 || enemy_it->getDir() == 2) && (enemy_it->getNextDir() == 1 || enemy_it->getNextDir() == 2)))
+	      //{
+	      //  if (abs(enemy_it->getLastPlayerCoord_x() - enemy_it->getPos().x) <= 4 || abs(enemy_it->getLastPlayerCoord_y() - enemy_it->getPos().y) <= 4)
+	      //    {
+	      //      enemy_it->setVisibleFlag(0);
+	      //    }
+	      //  enemy_it->setDir(enemy_it->getNextDir());
+	      //}
 	    }
 	}
       if (setControl == "Right")
