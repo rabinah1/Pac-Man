@@ -14,6 +14,7 @@
 
 int main()
 {
+  //sf::RectangleShape rectangle(sf::Vector2f(120.f, 50.f));
   int retValue = 0;
   sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Pac-Man", sf::Style::Fullscreen);
   sf::Event event;
@@ -186,6 +187,8 @@ int Game(sf::RenderWindow &window, sf::Font font)
   Enemy enemy3(1, Enemy3, E3, 0, 0, 4);
   Enemy enemy4(1, Enemy4, E4, 0, 0, 6);
   std::vector<sf::ConvexShape> mapShapes = initMap(window);
+  std::vector<sf::ConvexShape> intersect_shapes = mapShapes;
+  intersect_shapes.erase(intersect_shapes.begin()+20);
   std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int>> turnPoints = turningPoints(window);
   std::vector<sf::CircleShape> collectPoints = collPoints(window);
   std::vector<Enemy> enemyList;
@@ -198,10 +201,19 @@ int Game(sf::RenderWindow &window, sf::Font font)
   
   window.setFramerateLimit(60);
   window.clear(sf::Color::Black);
-  for (auto it = mapShapes.begin(); it != mapShapes.end(); it++)
+  for (auto it = enemyList.begin(); it != enemyList.end(); it++)
     {
-      window.draw(*it);
+      it->initLines();
+      std::vector<std::tuple<int, sf::RectangleShape>> vec = it->getLines();
+      for (auto temp = vec.begin(); temp != vec.end(); temp++)
+	{
+	  window.draw(std::get<1>(*temp));
+	}
     }
+  for (auto it = mapShapes.begin(); it != mapShapes.end(); it++)
+  {
+    window.draw(*it);
+  }
   for (auto it = collectPoints.begin(); it != collectPoints.end(); it++)
   {
     window.draw(*it);
@@ -217,6 +229,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   std::chrono::steady_clock sc;
   auto start = sc.now();
   auto current = sc.now();
+  int intersect_flag = 0;
       
   while(window.isOpen())
     {
@@ -227,6 +240,147 @@ int Game(sf::RenderWindow &window, sf::Font font)
 
       for (auto it = enemyList.begin(); it != enemyList.end(); it++)
 	{
+	  std::vector<std::tuple<int, sf::RectangleShape>> vec = it->getLines();
+	  for (auto temp = vec.begin(); temp != vec.end(); temp++)
+	    {
+	      if (std::get<1>(*temp).getGlobalBounds().intersects(player1.getSprite().getGlobalBounds()))
+		{
+		  for (auto it_map = intersect_shapes.begin(); it_map != intersect_shapes.end(); it_map++)
+		    {
+		      if (std::get<1>(*temp).getGlobalBounds().intersects(it_map->getGlobalBounds()))
+			{
+			  // 1 = left, 2 = up, 3 = right, 4 = down
+			  int PC = it_map->getPointCount(); // point count of the shape
+			  std::vector<sf::Vector2f> corner_list;
+			  for (int i = 0; i < PC; i++)
+			    {
+			      auto temp_point = it_map->getPoint(i);
+			      temp_point.x = it_map->getPosition().x+it_map->getPoint(i).x;
+			      temp_point.y = it_map->getPosition().y+it_map->getPoint(i).y;
+			      corner_list.push_back(temp_point);
+			    }
+			  // corner_list contains the coordinates of the intersecting shape
+			  if (std::get<0>(*temp) == 1) // Intersection with player and shape was at left
+			    {
+			      int point_check_up = 0;
+			      int point_check_down = 0;
+			      for (int i = 0; i < PC; i++)
+				{
+				  if (corner_list[i].x > player1.getPos().x && corner_list[i].y < player1.getPos().y)
+				    {
+				      point_check_up = 1;
+				    }
+				  if (corner_list[i].x > player1.getPos().x && corner_list[i].y > player1.getPos().y)
+				    {
+				      point_check_down = 1;
+				    }
+				}
+			      if (point_check_up == 1 && point_check_down == 1)
+				{
+				  intersect_flag = 1;
+				  break;
+				}
+			    }
+			  else if (std::get<0>(*temp) == 2) // Intersection with player and shape was at up
+			    {
+			      int point_check_left = 0;
+			      int point_check_right = 0;
+			      for (int i = 0; i < PC; i++)
+				{
+				  if (corner_list[i].y > player1.getPos().y && corner_list[i].x < player1.getPos().x)
+				    {
+				      point_check_left = 1;
+				    }
+				  if (corner_list[i].y > player1.getPos().y && corner_list[i].x > player1.getPos().x)
+				    {
+				      point_check_right = 1;
+				    }
+				}
+			      if (point_check_left == 1 && point_check_right == 1)
+				{
+				  intersect_flag = 1;
+				  break;
+				}
+			    }
+			  else if (std::get<0>(*temp) == 3) // Intersection with player and shape was at right
+			    {
+			      int point_check_up = 0;
+			      int point_check_down = 0;
+			      for (int i = 0; i < PC; i++)
+				{
+				  if (corner_list[i].x < player1.getPos().x && corner_list[i].y < player1.getPos().y)
+				    {
+				      point_check_up = 1;
+				    }
+				  if (corner_list[i].x < player1.getPos().x && corner_list[i].y > player1.getPos().y)
+				    {
+				      point_check_down = 1;
+				    }
+				}
+			      if (point_check_up == 1 && point_check_down == 1)
+				{
+				  intersect_flag = 1;
+				  break;
+				}
+			    }
+			  else if (std::get<0>(*temp) == 4) // Intersection with player and shape was at down
+			    {
+			      int point_check_left = 0;
+			      int point_check_right = 0;
+			      for (int i = 0; i < PC; i++)
+				{
+				  if (corner_list[i].y < player1.getPos().y && corner_list[i].x < player1.getPos().x)
+				    {
+				      point_check_left = 1;
+				    }
+				  if (corner_list[i].y < player1.getPos().y && corner_list[i].x > player1.getPos().x)
+				    {
+				      point_check_right = 1;
+				    }
+				}
+			      if (point_check_left == 1 && point_check_right == 1)
+				{
+				  intersect_flag = 1;
+				  break;
+				}
+			    }
+			}
+		    }
+		  if (intersect_flag == 1)
+		    {
+		      intersect_flag = 0;
+		      continue;
+		    }
+		  else // If there was an intersection with the player and no obstacles
+		    {
+		      //std::cout << "HELLO\n";
+		      if (std::get<0>(*temp) == 1) // left
+			{
+			  it->setVisibleFlag(1);
+			  it->setNextDir(1);
+			  it->setLastPlayerCoord_x(player1.getPos().x);
+			}
+		      else if (std::get<0>(*temp) == 2) // up
+			{
+			  it->setVisibleFlag(1);
+			  it->setNextDir(3);
+			  it->setLastPlayerCoord_y(player1.getPos().y);
+			}
+		      else if (std::get<0>(*temp) == 3) // right
+			{
+			  it->setVisibleFlag(1);
+			  it->setNextDir(2);
+			  it->setLastPlayerCoord_x(player1.getPos().x);
+			}
+		      else if (std::get<0>(*temp) == 4) // down
+			{
+			  it->setVisibleFlag(1);
+			  it->setNextDir(4);
+			  it->setLastPlayerCoord_y(player1.getPos().y);
+			}
+		    }
+		}
+	    }
 	  if (it->getSprite().getGlobalBounds().intersects(player1.getSprite().getGlobalBounds()))
 	    {
 	      for (int h = 0; h < 72; h++)
@@ -357,7 +511,8 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	{
 	  for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 	    {
-	      if (abs(std::get<0>(*it).getPosition().x - enemy_it->getPos().x) <= 4 && abs(std::get<0>(*it).getPosition().y - enemy_it->getPos().y) <= 4 && enemy_it->getDirCounter() > 3)
+	      if (abs(std::get<0>(*it).getPosition().x - enemy_it->getPos().x) <= 4 && abs(std::get<0>(*it).getPosition().y - enemy_it->getPos().y) <= 4 && enemy_it->getDirCounter() > 3 &&
+		  enemy_it->getVisibleFlag() == 0)
 		{
 		  enemy_it->resetDirCounter();
 		  enemy_it->incCrossCount();
@@ -382,6 +537,15 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		  srand(time(0) + enemy_it->getCrossCount());
 		  randDir = rand() % vSize;
 		  enemy_it->setDir(dirVector.at(randDir));
+		}
+	      else if (abs(std::get<0>(*it).getPosition().x - enemy_it->getPos().x) <= 4 && abs(std::get<0>(*it).getPosition().y - enemy_it->getPos().y) <= 4 && enemy_it->getDirCounter() > 3 &&
+		       enemy_it->getVisibleFlag() == 1)
+		{
+		  if (abs(enemy_it->getLastPlayerCoord_x() - enemy_it->getPos().x) <= 4 || abs(enemy_it->getLastPlayerCoord_y() - enemy_it->getPos().y) <= 4)
+		    {
+		      enemy_it->setVisibleFlag(0);
+		    }
+		  enemy_it->setDir(enemy_it->getNextDir());
 		}
 	    }
 	}
@@ -586,6 +750,11 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		      for (auto it = enemyList.begin(); it != enemyList.end(); it++)
 			{
 			  window.draw(it->getSprite());
+			  std::vector<std::tuple<int, sf::RectangleShape>> vec = it->getLines();
+			  for (auto temp = vec.begin(); temp != vec.end(); temp++)
+			    {
+			      window.draw(std::get<1>(*temp));
+			    }
 			}
 		      window.draw(player1.getSprite());
 		      window.draw(menuButton);
@@ -628,6 +797,12 @@ int Game(sf::RenderWindow &window, sf::Font font)
       for (auto it = enemyList.begin(); it != enemyList.end(); it++)
 	{
 	  window.draw(it->getSprite());
+	  it->updateLines();
+	  std::vector<std::tuple<int, sf::RectangleShape>> vec = it->getLines();
+	  for (auto temp = vec.begin(); temp != vec.end(); temp++)
+	    {
+	      window.draw(std::get<1>(*temp));
+	    }
 	}
       window.draw(player1.getSprite());
       window.display();
