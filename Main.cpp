@@ -14,7 +14,6 @@
 
 int main()
 {
-  //sf::RectangleShape rectangle(sf::Vector2f(120.f, 50.f));
   int retValue = 0;
   sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Pac-Man", sf::Style::Fullscreen);
   sf::Event event;
@@ -247,7 +246,8 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		{
 		  for (auto it_map = intersect_shapes.begin(); it_map != intersect_shapes.end(); it_map++)
 		    {
-		      if (std::get<1>(*temp).getGlobalBounds().intersects(it_map->getGlobalBounds()))
+		      //intersect_flag = 0;
+		      if (std::get<1>(*temp).getGlobalBounds().intersects(it_map->getGlobalBounds()))// and not (*it).getSprite().getGlobalBounds().intersects(it_map->getGlobalBounds()))
 			{
 			  // 1 = left, 2 = up, 3 = right, 4 = down
 			  int PC = it_map->getPointCount(); // point count of the shape
@@ -262,86 +262,155 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			  // corner_list contains the coordinates of the intersecting shape
 			  if (std::get<0>(*temp) == 1) // Intersection with player and shape was at left
 			    {
+			      //std::cout << "LEFT\n";
 			      int point_check_up = 0;
+			      int point_check_up_enemy = 0;
 			      int point_check_down = 0;
+			      int point_check_down_enemy = 0;
 			      for (int i = 0; i < PC; i++)
 				{
-				  if (corner_list[i].x > player1.getPos().x && corner_list[i].y < player1.getPos().y)
+				  if (corner_list[i].x > player1.getPos().x && corner_list[i].y < player1.getPos().y+20)
 				    {
 				      point_check_up = 1;
+				      if (corner_list[i].x < (*it).getPos().x)
+					point_check_up_enemy = 1;
 				    }
-				  if (corner_list[i].x > player1.getPos().x && corner_list[i].y > player1.getPos().y)
+				  if (corner_list[i].x > player1.getPos().x && corner_list[i].y > player1.getPos().y-20)
 				    {
 				      point_check_down = 1;
+				      if (corner_list[i].x < (*it).getPos().x)
+					point_check_down_enemy = 1;
 				    }
 				}
 			      if (point_check_up == 1 && point_check_down == 1)
 				{
-				  intersect_flag = 1;
-				  break;
+				  if((*it).getSprite().getGlobalBounds().intersects(it_map->getGlobalBounds()))
+				    {
+				      if (point_check_up_enemy == 1 && point_check_down_enemy == 1)
+					{
+					  intersect_flag = 1;
+					  break;
+					}
+				    }
+				  else
+				    {
+				      intersect_flag = 1;
+				      break;
+				    }
 				}
 			    }
 			  else if (std::get<0>(*temp) == 2) // Intersection with player and shape was at up
 			    {
 			      int point_check_left = 0;
+			      int point_check_left_enemy = 0;
 			      int point_check_right = 0;
+			      int point_check_right_enemy = 0;
 			      for (int i = 0; i < PC; i++)
 				{
-				  if (corner_list[i].y > player1.getPos().y && corner_list[i].x < player1.getPos().x)
+				  if (corner_list[i].y > player1.getPos().y && corner_list[i].x < player1.getPos().x+20)
 				    {
 				      point_check_left = 1;
+				      if (corner_list[i].y < (*it).getPos().y)
+					point_check_left_enemy = 1;
 				    }
-				  if (corner_list[i].y > player1.getPos().y && corner_list[i].x > player1.getPos().x)
+				  if (corner_list[i].y > player1.getPos().y && corner_list[i].x > player1.getPos().x-20)
 				    {
 				      point_check_right = 1;
+				      if (corner_list[i].y < (*it).getPos().y)
+					point_check_right_enemy = 1;
 				    }
 				}
 			      if (point_check_left == 1 && point_check_right == 1)
 				{
-				  intersect_flag = 1;
-				  break;
+				  if((*it).getSprite().getGlobalBounds().intersects(it_map->getGlobalBounds()))
+				    {
+				      if (point_check_left_enemy == 1 && point_check_right_enemy == 1)
+					{
+					  intersect_flag = 1;
+					  break;
+					}
+				    }
+				  else
+				    {
+				      intersect_flag = 1;
+				      break;
+				    }
 				}
 			    }
 			  else if (std::get<0>(*temp) == 3) // Intersection with player and shape was at right
 			    {
 			      int point_check_up = 0;
+			      int point_check_up_enemy = 0;
 			      int point_check_down = 0;
+			      int point_check_down_enemy = 0;
 			      for (int i = 0; i < PC; i++)
 				{
-				  if (corner_list[i].x < player1.getPos().x && corner_list[i].y < player1.getPos().y)
+				  if (corner_list[i].x < player1.getPos().x && corner_list[i].y < player1.getPos().y+20)
 				    {
 				      point_check_up = 1;
+				      if (corner_list[i].x > (*it).getPos().x)
+					point_check_up_enemy = 1;
 				    }
-				  if (corner_list[i].x < player1.getPos().x && corner_list[i].y > player1.getPos().y)
+				  if (corner_list[i].x < player1.getPos().x && corner_list[i].y > player1.getPos().y-20)
 				    {
 				      point_check_down = 1;
+				      if (corner_list[i].x > (*it).getPos().x)
+					point_check_down_enemy = 1;
 				    }
 				}
 			      if (point_check_up == 1 && point_check_down == 1)
 				{
-				  intersect_flag = 1;
-				  break;
+				  if((*it).getSprite().getGlobalBounds().intersects(it_map->getGlobalBounds()))
+				    {
+				      if (point_check_up_enemy == 1 && point_check_down_enemy == 1)
+					{
+					  intersect_flag = 1;
+					  break;
+					}
+				    }
+				  else
+				    {
+				      intersect_flag = 1;
+				      break;
+				    }
 				}
 			    }
 			  else if (std::get<0>(*temp) == 4) // Intersection with player and shape was at down
 			    {
 			      int point_check_left = 0;
+			      int point_check_left_enemy = 0;
 			      int point_check_right = 0;
+			      int point_check_right_enemy = 0;
 			      for (int i = 0; i < PC; i++)
 				{
-				  if (corner_list[i].y < player1.getPos().y && corner_list[i].x < player1.getPos().x)
+				  if (corner_list[i].y < player1.getPos().y && corner_list[i].x < player1.getPos().x+20)
 				    {
 				      point_check_left = 1;
+				      if (corner_list[i].y > (*it).getPos().y)
+					point_check_left_enemy = 1;
 				    }
-				  if (corner_list[i].y < player1.getPos().y && corner_list[i].x > player1.getPos().x)
+				  if (corner_list[i].y < player1.getPos().y && corner_list[i].x > player1.getPos().x-20)
 				    {
 				      point_check_right = 1;
+				      if (corner_list[i].y > (*it).getPos().y)
+					point_check_right_enemy = 1;
 				    }
 				}
 			      if (point_check_left == 1 && point_check_right == 1)
 				{
-				  intersect_flag = 1;
-				  break;
+				  if((*it).getSprite().getGlobalBounds().intersects(it_map->getGlobalBounds()))
+				    {
+				      if (point_check_left_enemy == 1 && point_check_right_enemy == 1)
+					{
+					  intersect_flag = 1;
+					  break;
+					}
+				    }
+				  else
+				    {
+				      intersect_flag = 1;
+				      break;
+				    }
 				}
 			    }
 			}
@@ -353,9 +422,36 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		    }
 		  else // If there was an intersection with the player and no obstacles
 		    {
-		      //std::cout << "HELLO\n";
 		      if (std::get<0>(*temp) == 1) // left
 			{
+			  // If the enemy moves horizontally, do nothing
+			  // If the enemy moves vertically
+			  int min_dist = 100000;
+			  std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int>>::iterator min_point;
+			  if (it->getDir() == 3 || it->getDir() == 4)
+			    {
+			      // loop every turnpoint, and get the one that is closest in the axis of movement
+			      for (auto point_it = turnPoints.begin(); point_it != turnPoints.end(); point_it++)
+				{
+				  // jos turnpoint on vihollisen liikkuma-akselilla
+				  if (abs(std::get<0>(*point_it).getPosition().x - it->getPos().x) <= 20)
+				    {
+				      if (abs(std::get<0>(*point_it).getPosition().y - it->getPos().y) <= min_dist)
+					{
+					  min_dist = abs(std::get<0>(*point_it).getPosition().y - it->getPos().y);
+					  min_point = point_it;
+					}
+				    }
+				}
+			      if (std::get<0>(*min_point).getPosition().y > it->getPos().y)
+				{
+				  it->setDir(4);
+				}
+			      else
+				{
+				  it->setDir(3);
+				}
+			    }
 			  it->setVisibleFlag(1);
 			  it->setNextDir(1);
 			  it->setLastPlayerCoord_x(player1.getPos().x);
@@ -364,6 +460,34 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			}
 		      else if (std::get<0>(*temp) == 2) // up
 			{
+			  // If the enemy moves vertically, do nothing
+			  // If the enemy moves horizontally
+			  int min_dist = 100000;
+			  std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int>>::iterator min_point;
+			  if (it->getDir() == 1 || it->getDir() == 2)
+			    {
+			      // loop every turnpoint, and get the one that is closes in the axis of movement
+			      for (auto point_it = turnPoints.begin(); point_it != turnPoints.end(); point_it++)
+				{
+				  // jos turnpoint on vihollisen liikkuma-akselilla
+				  if (abs(std::get<0>(*point_it).getPosition().y - it->getPos().y) <= 20)
+				    {
+				      if (abs(std::get<0>(*point_it).getPosition().x - it->getPos().x) <= min_dist)
+					{
+					  min_dist = abs(std::get<0>(*point_it).getPosition().x - it->getPos().x);
+					  min_point = point_it;
+					}
+				    }
+				}
+			      if (std::get<0>(*min_point).getPosition().x > it->getPos().x)
+				{
+				  it->setDir(2);
+				}
+			      else
+				{
+				  it->setDir(1);
+				}
+			    }
 			  it->setVisibleFlag(1);
 			  it->setNextDir(3);
 			  it->setLastPlayerCoord_y(player1.getPos().y);
@@ -372,6 +496,34 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			}
 		      else if (std::get<0>(*temp) == 3) // right
 			{
+			  // If the enemy moves horizontally, do nothing
+			  // If the enemy moves vertically
+			  int min_dist = 100000;
+			  std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int>>::iterator min_point;
+			  if (it->getDir() == 3 || it->getDir() == 4)
+			    {
+			      // loop every turnpoint, and get the one that is closes in the axis of movement
+			      for (auto point_it = turnPoints.begin(); point_it != turnPoints.end(); point_it++)
+				{
+				  // jos turnpoint on vihollisen liikkuma-akselilla
+				  if (abs(std::get<0>(*point_it).getPosition().x - it->getPos().x) <= 20)
+				    {
+				      if (abs(std::get<0>(*point_it).getPosition().y - it->getPos().y) <= min_dist)
+					{
+					  min_dist = abs(std::get<0>(*point_it).getPosition().y - it->getPos().y);
+					  min_point = point_it;
+					}
+				    }
+				}
+			      if (std::get<0>(*min_point).getPosition().y > it->getPos().y)
+				{
+				  it->setDir(4);
+				}
+			      else
+				{
+				  it->setDir(3);
+				}
+			    }
 			  it->setVisibleFlag(1);
 			  it->setNextDir(2);
 			  it->setLastPlayerCoord_x(player1.getPos().x);
@@ -380,6 +532,34 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			}
 		      else if (std::get<0>(*temp) == 4) // down
 			{
+			  // If the enemy moves vertically, do nothing
+			  // If the enemy moves horizontally
+			  int min_dist = 100000;
+			  std::vector<std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int>>::iterator min_point;
+			  if (it->getDir() == 1 || it->getDir() == 2)
+			    {
+			      // loop every turnpoint, and get the one that is closes in the axis of movement
+			      for (auto point_it = turnPoints.begin(); point_it != turnPoints.end(); point_it++)
+				{
+				  // jos turnpoint on vihollisen liikkuma-akselilla
+				  if (abs(std::get<0>(*point_it).getPosition().y - it->getPos().y) <= 20)
+				    {
+				      if (abs(std::get<0>(*point_it).getPosition().x - it->getPos().x) <= min_dist)
+					{
+					  min_dist = abs(std::get<0>(*point_it).getPosition().x - it->getPos().x);
+					  min_point = point_it;
+					}
+				    }
+				}
+			      if (std::get<0>(*min_point).getPosition().x > it->getPos().x)
+				{
+				  it->setDir(2);
+				}
+			      else
+				{
+				  it->setDir(1);
+				}
+			    }
 			  it->setVisibleFlag(1);
 			  it->setNextDir(4);
 			  it->setLastPlayerCoord_y(player1.getPos().y);
@@ -406,7 +586,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 
       for (auto it = enemyList.begin(); it != enemyList.end(); it++)
 	{
-	  if (it->getDirCounter() <= 4)
+	  if (it->getDirCounter() <= 4) // <= 4
 	    {
 	      it->incDirCounter();
 	    }
@@ -519,10 +699,11 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	{
 	  for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 	    {
+	      // <= 4
 	      if (abs(std::get<0>(*it).getPosition().x - enemy_it->getPos().x) <= 4 && abs(std::get<0>(*it).getPosition().y - enemy_it->getPos().y) <= 4 && enemy_it->getDirCounter() > 3 &&
 		  enemy_it->getVisibleFlag() == 0)
 		{
-		  enemy_it->updatePoint(std::get<0>(*it));
+		  // enemy_it->updatePoint(std::get<0>(*it));
 		  enemy_it->resetDirCounter();
 		  enemy_it->incCrossCount();
 		  std::vector<int> dirVector;
@@ -547,53 +728,71 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		  randDir = rand() % vSize;
 		  enemy_it->setDir(dirVector.at(randDir));
 		}
-	      
+
+	      // <= 4
 	      else if (abs(std::get<0>(*it).getPosition().x - enemy_it->getPos().x) <= 4 && abs(std::get<0>(*it).getPosition().y - enemy_it->getPos().y) <= 4 && enemy_it->getDirCounter() > 3 &&
 		       enemy_it->getVisibleFlag() == 1)
 		{
-		  enemy_it->updatePoint(std::get<0>(*it));
+		  //enemy_it->resetDirCounter();
+		  //enemy_it->incCrossCount();
+		  // enemy_it->updatePoint(std::get<0>(*it));
 		  if (enemy_it->getXCoordFlag() == 1)
 		    {
-		      if (abs(enemy_it->getLastPlayerCoord_x() - enemy_it->getPos().x) <= 4)
+		      //enemy_it->setDir(enemy_it->getNextDir());
+		      // <= 4
+		      if (abs(enemy_it->getLastPlayerCoord_x() - enemy_it->getPos().x) <= 15)
 			{
 			  enemy_it->setVisibleFlag(0);
+			  enemy_it->setXCoordFlag(0);
+			  enemy_it->setYCoordFlag(0);
+			  //break;
 			}
 		    }
 		  else if (enemy_it->getYCoordFlag() == 1)
 		    {
-		      if (abs(enemy_it->getLastPlayerCoord_y() - enemy_it->getPos().y) <= 4)
+		      //enemy_it->setDir(enemy_it->getNextDir());
+		      // <= 4
+		      if (abs(enemy_it->getLastPlayerCoord_y() - enemy_it->getPos().y) <= 15)
 			{
 			  enemy_it->setVisibleFlag(0);
+			  enemy_it->setXCoordFlag(0);
+			  enemy_it->setYCoordFlag(0);
+			  //break;
 			}
 		    }
+		  //if (enemy_it->getDirCounter() > 3)
+		  //{
+		  //enemy_it->resetDirCounter();
 		  enemy_it->setDir(enemy_it->getNextDir());
+		  //break;
+		      //}
 		}
 
-	      else if (enemy_it->getVisibleFlag() == 1 && enemy_it->getDirCounter() > 3)
-		{
-		  //enemy_it->resetDirCounter();
-		  float right_dist = enemy_it->getPos().x - enemy_it->getPoint().getPosition().x;
-		  float left_dist = enemy_it->getPoint().getPosition().x - enemy_it->getPos().x;
-		  float up_dist = enemy_it->getPoint().getPosition().y - enemy_it->getPos().y;
-		  float down_dist = enemy_it->getPos().y - enemy_it->getPoint().getPosition().y;
-		  if (right_dist > left_dist && right_dist > up_dist && right_dist > down_dist && enemy1.getDir() == 2)
-		    {
-		      enemy_it->setDir(1);
-		    }
-		  else if (left_dist > right_dist && left_dist > up_dist && left_dist > down_dist && enemy1.getDir() == 1)
-		    {
-		      enemy_it->setDir(2);
-		    }
-		  else if (up_dist > right_dist && up_dist > left_dist && up_dist > down_dist && enemy1.getDir() == 3)
-		    {
-		      enemy_it->setDir(4);
-		    }
-		  else if (down_dist > left_dist && down_dist > right_dist && down_dist > up_dist && enemy1.getDir() == 4)
-		    {
-		      enemy_it->setDir(3);
-		    }
-		}
-	      
+	      // else if (enemy_it->getVisibleFlag() == 1 && enemy_it->getDirCounter() > 3)
+	      // 	{
+	      // 	  //enemy_it->resetDirCounter();
+	      // 	  float right_dist = enemy_it->getPos().x - enemy_it->getPoint().getPosition().x;
+	      // 	  float left_dist = enemy_it->getPoint().getPosition().x - enemy_it->getPos().x;
+	      // 	  float up_dist = enemy_it->getPoint().getPosition().y - enemy_it->getPos().y;
+	      // 	  float down_dist = enemy_it->getPos().y - enemy_it->getPoint().getPosition().y;
+	      // 	  if (right_dist > left_dist && right_dist > up_dist && right_dist > down_dist && enemy1.getDir() == 2)
+	      // 	    {
+	      // 	      enemy_it->setDir(1);
+	      // 	    }
+	      // 	  else if (left_dist > right_dist && left_dist > up_dist && left_dist > down_dist && enemy1.getDir() == 1)
+	      // 	    {
+	      // 	      enemy_it->setDir(2);
+	      // 	    }
+	      // 	  else if (up_dist > right_dist && up_dist > left_dist && up_dist > down_dist && enemy1.getDir() == 3)
+	      // 	    {
+	      // 	      enemy_it->setDir(4);
+	      // 	    }
+	      // 	  else if (down_dist > left_dist && down_dist > right_dist && down_dist > up_dist && enemy1.getDir() == 4)
+	      // 	    {
+	      // 	      enemy_it->setDir(3);
+	      // 	    }
+	      // 	}
+ 	      
 	      //else if (enemy_it->getDirCounter() > 3 && enemy_it->getVisibleFlag() == 1 && ((enemy_it->getDir() == 3 || enemy_it->getDir() == 4) &&
 	      //									    (enemy_it->getNextDir() == 3|| enemy_it->getNextDir() == 4)) &&
 	      //       ((enemy_it->getDir() == 1 || enemy_it->getDir() == 2) && (enemy_it->getNextDir() == 1 || enemy_it->getNextDir() == 2)))
