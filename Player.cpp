@@ -33,7 +33,7 @@ void Player::incLives()
 
 void Player::incPoints()
 {
-  points = points + 1;
+  points = points + 10;
 }
 
 void Player::changeTexture()

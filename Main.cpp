@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <vector>
 #include <tuple>
 #include <Main.hpp>
@@ -97,6 +98,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int checker = 0;
   int loop_check = 0;
   int endRet = 0;
+  std::ostringstream ss_points;
   std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int> currPoint;
   sf::Event event;
   sf::Texture pac1;
@@ -111,13 +113,16 @@ int Game(sf::RenderWindow &window, sf::Font font)
   sf::Text readyText("Get ready!", font, 80);
   sf::Text menuButton("Menu", font, 80);
   sf::Text exitButton("Exit", font, 80);
+  sf::Text pointsText("Points: 0", font, 50);
   
   readyText.setFillColor(sf::Color::White);
   menuButton.setFillColor(sf::Color::White);
   exitButton.setFillColor(sf::Color::White);
+  pointsText.setFillColor(sf::Color::White);
   readyText.setPosition(window.getSize().x/2-readyText.getLocalBounds().width/2, window.getSize().y-readyText.getLocalBounds().height*10);
   menuButton.setPosition(window.getSize().x/2-menuButton.getLocalBounds().width/2, window.getSize().y-menuButton.getLocalBounds().height*6);
   exitButton.setPosition(window.getSize().x/2-exitButton.getLocalBounds().width/2, window.getSize().y-exitButton.getLocalBounds().height*3);
+  pointsText.setPosition(window.getSize().x*0.82, window.getSize().y*0.11);
   pac1.loadFromFile("Pac1.png");
   pac2.loadFromFile("Pac2.png");
   pac3.loadFromFile("Pac3.png");
@@ -223,15 +228,22 @@ int Game(sf::RenderWindow &window, sf::Font font)
   window.draw(enemy4.getSprite());
   window.draw(player1.getSprite());
   window.draw(readyText);
+  window.draw(pointsText);
   window.display();
   sleep(3);
   std::chrono::steady_clock sc;
   auto start = sc.now();
   auto current = sc.now();
   int intersect_flag = 0;
+  int collection_delay = 0;
       
   while(window.isOpen())
     {
+      sf::Text pointsText("Points: "+ss_points.str(), font, 50);
+      pointsText.setFillColor(sf::Color::White);
+      pointsText.setPosition(window.getSize().x*0.82, window.getSize().y*0.11);
+      ss_points.str("");
+      ss_points << player1.getPoints();
       current = sc.now();
       sf::Vector2f spritePos = player1.getPos();
       sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -590,6 +602,36 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	    {
 	      it->incDirCounter();
 	    }
+	}
+
+      if (collection_delay > 0)
+	collection_delay -= 1;
+
+      //int collection_delay = 0;
+      for (auto collect_it = collectPoints.begin(); collect_it != collectPoints.end(); collect_it++)
+	{
+	  if ((*collect_it).getGlobalBounds().intersects(player1.getSprite().getGlobalBounds()) and collection_delay == 0)
+	    {
+	      if (collect_it == collectPoints.end()-1)
+		{
+		  player1.incPoints();
+		  collectPoints.pop_back();
+		  collection_delay = 20;
+		  break;
+		  //continue;
+		}
+	      else
+		{
+		  player1.incPoints();
+		  collectPoints.erase(collect_it);
+		  //collectPoints.pop_back();
+		  collection_delay = 20;
+		  break;
+		}
+	      //collection_delay = 20;
+	    }
+	  //if (collection_delay > 0)
+	  //collection_delay -= 1;
 	}
       
       for (auto it = enemyList.begin(); it != enemyList.end(); it++)
@@ -1015,6 +1057,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		      window.draw(player1.getSprite());
 		      window.draw(menuButton);
 		      window.draw(exitButton);
+		      window.draw(pointsText);
 		      window.display();
 		      if (pause == 1)
 			{
@@ -1061,6 +1104,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	    }
 	}
       window.draw(player1.getSprite());
+      window.draw(pointsText);
       window.display();
     }
   return 0;
