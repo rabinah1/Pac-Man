@@ -92,6 +92,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int pause = 0;
   int currentCont = 0;
   int temp = 0;
+  float temp_var = 0.0;
   int sizeX = window.getSize().x;
   int sizeY = window.getSize().y;
   int randDir = 0;
@@ -99,6 +100,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int loop_check = 0;
   int endRet = 0;
   std::ostringstream ss_points;
+  std::ostringstream ss_lives;
   std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int> currPoint;
   sf::Event event;
   sf::Texture pac1;
@@ -114,15 +116,18 @@ int Game(sf::RenderWindow &window, sf::Font font)
   sf::Text menuButton("Menu", font, 80);
   sf::Text exitButton("Exit", font, 80);
   sf::Text pointsText("Points: 0", font, 50);
+  sf::Text livesText("Lives: 3", font, 50);
   
   readyText.setFillColor(sf::Color::White);
   menuButton.setFillColor(sf::Color::White);
   exitButton.setFillColor(sf::Color::White);
   pointsText.setFillColor(sf::Color::White);
+  livesText.setFillColor(sf::Color::White);
   readyText.setPosition(window.getSize().x/2-readyText.getLocalBounds().width/2, window.getSize().y-readyText.getLocalBounds().height*10);
   menuButton.setPosition(window.getSize().x/2-menuButton.getLocalBounds().width/2, window.getSize().y-menuButton.getLocalBounds().height*6);
   exitButton.setPosition(window.getSize().x/2-exitButton.getLocalBounds().width/2, window.getSize().y-exitButton.getLocalBounds().height*3);
   pointsText.setPosition(window.getSize().x*0.82, window.getSize().y*0.11);
+  livesText.setPosition(window.getSize().x*0.82, window.getSize().y*0.04);
   pac1.loadFromFile("Pac1.png");
   pac2.loadFromFile("Pac2.png");
   pac3.loadFromFile("Pac3.png");
@@ -229,6 +234,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   window.draw(player1.getSprite());
   window.draw(readyText);
   window.draw(pointsText);
+  window.draw(livesText);
   window.display();
   sleep(3);
   std::chrono::steady_clock sc;
@@ -240,10 +246,15 @@ int Game(sf::RenderWindow &window, sf::Font font)
   while(window.isOpen())
     {
       sf::Text pointsText("Points: "+ss_points.str(), font, 50);
+      sf::Text livesText("Lives: "+ss_lives.str(), font, 50);
       pointsText.setFillColor(sf::Color::White);
+      livesText.setFillColor(sf::Color::White);
       pointsText.setPosition(window.getSize().x*0.82, window.getSize().y*0.11);
+      livesText.setPosition(window.getSize().x*0.82, window.getSize().y*0.04);
       ss_points.str("");
+      ss_lives.str("");
       ss_points << player1.getPoints();
+      ss_lives << player1.getLives();
       current = sc.now();
       sf::Vector2f spritePos = player1.getPos();
       sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -583,14 +594,46 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	    }
 	  if (it->getSprite().getGlobalBounds().intersects(player1.getSprite().getGlobalBounds()))
 	    {
-	      for (int h = 0; h < 72; h++)
+	      if (player1.getLives() > 0)
 		{
-		  delete [] AdjMat[h];
+		  player1.decLives();
+		  temp_var = 0.0;
+		  for (auto end_it = enemyList.begin(); end_it != enemyList.end(); end_it++)
+		    {
+		      end_it->setPos(sf::Vector2f(window.getSize().x/2*(0.86+temp_var), window.getSize().y/2*0.95));
+		      end_it->setStartPos(0);
+		      end_it->setDir(0);
+		      end_it->setChecker(0);
+		      end_it->setXCoordFlag(0);
+		      end_it->setYCoordFlag(0);
+		      end_it->setLastPlayerCoord_y(0.0);
+		      end_it->setLastPlayerCoord_x(0.0);
+		      end_it->setVisibleFlag(0);
+		      end_it->resetDirCounter();
+		      temp_var = temp_var+0.09;
+		    }
+		  player1.setPos(sf::Vector2f(window.getSize().x/2, window.getSize().y/2*1.5));
+		  player1.setDir(0);
+		  player1.setRot(0);
+		  setControl = "Right";
+		  control = 1;
+		  temp = 0;
+		  loop_check = 0;
+		  sleep(2);
+		  start = sc.now();
+		  break;
 		}
-	      delete [] AdjMat;
-	      AdjMat = 0;
-	      endRet = gameOver(window, font);
-	      return endRet;
+	      else
+		{
+		  for (int h = 0; h < 72; h++)
+		    {
+		      delete [] AdjMat[h];
+		    }
+		  delete [] AdjMat;
+		  AdjMat = 0;
+		  endRet = gameOver(window, font);
+		  return endRet;
+		}
 	    }
 	}
 
@@ -598,7 +641,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 
       for (auto it = enemyList.begin(); it != enemyList.end(); it++)
 	{
-	  if (it->getDirCounter() <= 4) // <= 4
+	  if (it->getDirCounter() <= 4)
 	    {
 	      it->incDirCounter();
 	    }
@@ -1058,6 +1101,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		      window.draw(menuButton);
 		      window.draw(exitButton);
 		      window.draw(pointsText);
+		      window.draw(livesText);
 		      window.display();
 		      if (pause == 1)
 			{
@@ -1105,6 +1149,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	}
       window.draw(player1.getSprite());
       window.draw(pointsText);
+      window.draw(livesText);
       window.display();
     }
   return 0;
