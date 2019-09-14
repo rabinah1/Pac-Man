@@ -83,6 +83,7 @@ int main()
 
 int Game(sf::RenderWindow &window, sf::Font font)
 {
+  int round = 1;
   int control = 1;
   std::string setControl = "Right";
   int speed = 4;
@@ -101,6 +102,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   int endRet = 0;
   std::ostringstream ss_points;
   std::ostringstream ss_lives;
+  std::ostringstream ss_rounds;
   std::tuple<sf::CircleShape, std::string, std::string, std::string, std::string, int> currPoint;
   sf::Event event;
   sf::Texture pac1;
@@ -117,17 +119,20 @@ int Game(sf::RenderWindow &window, sf::Font font)
   sf::Text exitButton("Exit", font, 80);
   sf::Text pointsText("Points: 0", font, 50);
   sf::Text livesText("Lives: 3", font, 50);
+  sf::Text roundsText("Round: 1", font, 50);
   
   readyText.setFillColor(sf::Color::White);
   menuButton.setFillColor(sf::Color::White);
   exitButton.setFillColor(sf::Color::White);
   pointsText.setFillColor(sf::Color::White);
   livesText.setFillColor(sf::Color::White);
+  roundsText.setFillColor(sf::Color::White);
   readyText.setPosition(window.getSize().x/2-readyText.getLocalBounds().width/2, window.getSize().y-readyText.getLocalBounds().height*10);
   menuButton.setPosition(window.getSize().x/2-menuButton.getLocalBounds().width/2, window.getSize().y-menuButton.getLocalBounds().height*6);
   exitButton.setPosition(window.getSize().x/2-exitButton.getLocalBounds().width/2, window.getSize().y-exitButton.getLocalBounds().height*3);
   pointsText.setPosition(window.getSize().x*0.82, window.getSize().y*0.11);
   livesText.setPosition(window.getSize().x*0.82, window.getSize().y*0.04);
+  roundsText.setPosition(window.getSize().x*0.82, window.getSize().y*0.18);
   pac1.loadFromFile("Pac1.png");
   pac2.loadFromFile("Pac2.png");
   pac3.loadFromFile("Pac3.png");
@@ -235,6 +240,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
   window.draw(readyText);
   window.draw(pointsText);
   window.draw(livesText);
+  window.draw(roundsText);
   window.display();
   sleep(3);
   std::chrono::steady_clock sc;
@@ -247,14 +253,18 @@ int Game(sf::RenderWindow &window, sf::Font font)
     {
       sf::Text pointsText("Points: "+ss_points.str(), font, 50);
       sf::Text livesText("Lives: "+ss_lives.str(), font, 50);
+      sf::Text roundsText("Round: "+ss_rounds.str(), font, 50);
       pointsText.setFillColor(sf::Color::White);
       livesText.setFillColor(sf::Color::White);
       pointsText.setPosition(window.getSize().x*0.82, window.getSize().y*0.11);
       livesText.setPosition(window.getSize().x*0.82, window.getSize().y*0.04);
+      roundsText.setPosition(window.getSize().x*0.82, window.getSize().y*0.18);
       ss_points.str("");
       ss_lives.str("");
+      ss_rounds.str("");
       ss_points << player1.getPoints();
       ss_lives << player1.getLives();
+      ss_rounds << round;
       current = sc.now();
       sf::Vector2f spritePos = player1.getPos();
       sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -269,8 +279,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		{
 		  for (auto it_map = intersect_shapes.begin(); it_map != intersect_shapes.end(); it_map++)
 		    {
-		      //intersect_flag = 0;
-		      if (std::get<1>(*temp).getGlobalBounds().intersects(it_map->getGlobalBounds()))// and not (*it).getSprite().getGlobalBounds().intersects(it_map->getGlobalBounds()))
+		      if (std::get<1>(*temp).getGlobalBounds().intersects(it_map->getGlobalBounds()))
 			{
 			  // 1 = left, 2 = up, 3 = right, 4 = down
 			  int PC = it_map->getPointCount(); // point count of the shape
@@ -285,7 +294,6 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			  // corner_list contains the coordinates of the intersecting shape
 			  if (std::get<0>(*temp) == 1) // Intersection with player and shape was at left
 			    {
-			      //std::cout << "LEFT\n";
 			      int point_check_up = 0;
 			      int point_check_up_enemy = 0;
 			      int point_check_down = 0;
@@ -456,7 +464,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			      // loop every turnpoint, and get the one that is closest in the axis of movement
 			      for (auto point_it = turnPoints.begin(); point_it != turnPoints.end(); point_it++)
 				{
-				  // jos turnpoint on vihollisen liikkuma-akselilla
+				  // If a turnpoint is on the axis of movement of the enemy
 				  if (abs(std::get<0>(*point_it).getPosition().x - it->getPos().x) <= 20)
 				    {
 				      if (abs(std::get<0>(*point_it).getPosition().y - it->getPos().y) <= min_dist)
@@ -492,7 +500,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			      // loop every turnpoint, and get the one that is closes in the axis of movement
 			      for (auto point_it = turnPoints.begin(); point_it != turnPoints.end(); point_it++)
 				{
-				  // jos turnpoint on vihollisen liikkuma-akselilla
+				  // If a turnpoint is on the axis of movement of the enemy
 				  if (abs(std::get<0>(*point_it).getPosition().y - it->getPos().y) <= 20)
 				    {
 				      if (abs(std::get<0>(*point_it).getPosition().x - it->getPos().x) <= min_dist)
@@ -528,7 +536,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			      // loop every turnpoint, and get the one that is closes in the axis of movement
 			      for (auto point_it = turnPoints.begin(); point_it != turnPoints.end(); point_it++)
 				{
-				  // jos turnpoint on vihollisen liikkuma-akselilla
+				  // If a turnpoint is on the axis of movement of the enemy
 				  if (abs(std::get<0>(*point_it).getPosition().x - it->getPos().x) <= 20)
 				    {
 				      if (abs(std::get<0>(*point_it).getPosition().y - it->getPos().y) <= min_dist)
@@ -564,7 +572,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			      // loop every turnpoint, and get the one that is closes in the axis of movement
 			      for (auto point_it = turnPoints.begin(); point_it != turnPoints.end(); point_it++)
 				{
-				  // jos turnpoint on vihollisen liikkuma-akselilla
+				  // If a turnpoint is on the axis of movement of the enemy
 				  if (abs(std::get<0>(*point_it).getPosition().y - it->getPos().y) <= 20)
 				    {
 				      if (abs(std::get<0>(*point_it).getPosition().x - it->getPos().x) <= min_dist)
@@ -595,45 +603,45 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	  if (it->getSprite().getGlobalBounds().intersects(player1.getSprite().getGlobalBounds()))
 	    {
 	      if (player1.getLives() > 0)
-		{
-		  player1.decLives();
-		  temp_var = 0.0;
-		  for (auto end_it = enemyList.begin(); end_it != enemyList.end(); end_it++)
-		    {
-		      end_it->setPos(sf::Vector2f(window.getSize().x/2*(0.86+temp_var), window.getSize().y/2*0.95));
-		      end_it->setStartPos(0);
-		      end_it->setDir(0);
-		      end_it->setChecker(0);
-		      end_it->setXCoordFlag(0);
-		      end_it->setYCoordFlag(0);
-		      end_it->setLastPlayerCoord_y(0.0);
-		      end_it->setLastPlayerCoord_x(0.0);
-		      end_it->setVisibleFlag(0);
-		      end_it->resetDirCounter();
-		      temp_var = temp_var+0.09;
-		    }
-		  player1.setPos(sf::Vector2f(window.getSize().x/2, window.getSize().y/2*1.5));
-		  player1.setDir(0);
-		  player1.setRot(0);
-		  setControl = "Right";
-		  control = 1;
-		  temp = 0;
-		  loop_check = 0;
-		  sleep(2);
-		  start = sc.now();
-		  break;
-		}
+	      	{
+	      	  player1.decLives();
+	      	  temp_var = 0.0;
+	      	  for (auto end_it = enemyList.begin(); end_it != enemyList.end(); end_it++)
+	      	    {
+	      	      end_it->setPos(sf::Vector2f(window.getSize().x/2*(0.86+temp_var), window.getSize().y/2*0.95));
+	      	      end_it->setStartPos(0);
+	      	      end_it->setDir(0);
+	      	      end_it->setChecker(0);
+	      	      end_it->setXCoordFlag(0);
+	      	      end_it->setYCoordFlag(0);
+	      	      end_it->setLastPlayerCoord_y(0.0);
+	      	      end_it->setLastPlayerCoord_x(0.0);
+	      	      end_it->setVisibleFlag(0);
+	      	      end_it->resetDirCounter();
+	      	      temp_var = temp_var+0.09;
+	      	    }
+	      	  player1.setPos(sf::Vector2f(window.getSize().x/2, window.getSize().y/2*1.5));
+	      	  player1.setDir(0);
+	      	  player1.setRot(0);
+	      	  setControl = "Right";
+	      	  control = 1;
+	      	  temp = 0;
+	      	  loop_check = 0;
+	      	  sleep(2);
+	      	  start = sc.now();
+	      	  break;
+	      	}
 	      else
-		{
-		  for (int h = 0; h < 72; h++)
-		    {
-		      delete [] AdjMat[h];
-		    }
-		  delete [] AdjMat;
-		  AdjMat = 0;
-		  endRet = gameOver(window, font);
-		  return endRet;
-		}
+	      	{
+	      	  for (int h = 0; h < 72; h++)
+	      	    {
+	      	      delete [] AdjMat[h];
+	      	    }
+	      	  delete [] AdjMat;
+	      	  AdjMat = 0;
+	      	  endRet = gameOver(window, font);
+	      	  return endRet;
+	      	}
 	    }
 	}
 
@@ -650,31 +658,57 @@ int Game(sf::RenderWindow &window, sf::Font font)
       if (collection_delay > 0)
 	collection_delay -= 1;
 
-      //int collection_delay = 0;
       for (auto collect_it = collectPoints.begin(); collect_it != collectPoints.end(); collect_it++)
 	{
 	  if ((*collect_it).getGlobalBounds().intersects(player1.getSprite().getGlobalBounds()) and collection_delay == 0)
 	    {
+	      if (collectPoints.size() <= 1)
+		{
+		  round += 1;
+		  player1.incLives();
+		  player1.incPoints();
+	      	  temp_var = 0.0;
+	      	  for (auto end_it = enemyList.begin(); end_it != enemyList.end(); end_it++)
+	      	    {
+	      	      end_it->setPos(sf::Vector2f(window.getSize().x/2*(0.86+temp_var), window.getSize().y/2*0.95));
+	      	      end_it->setStartPos(0);
+	      	      end_it->setDir(0);
+	      	      end_it->setChecker(0);
+	      	      end_it->setXCoordFlag(0);
+	      	      end_it->setYCoordFlag(0);
+	      	      end_it->setLastPlayerCoord_y(0.0);
+	      	      end_it->setLastPlayerCoord_x(0.0);
+	      	      end_it->setVisibleFlag(0);
+	      	      end_it->resetDirCounter();
+	      	      temp_var = temp_var+0.09;
+	      	    }
+	      	  player1.setPos(sf::Vector2f(window.getSize().x/2, window.getSize().y/2*1.5));
+	      	  player1.setDir(0);
+	      	  player1.setRot(0);
+	      	  setControl = "Right";
+	      	  control = 1;
+	      	  temp = 0;
+	      	  loop_check = 0;
+	      	  sleep(2);
+	      	  start = sc.now();
+		  collectPoints = collPoints(window);
+	      	  break;
+		}
 	      if (collect_it == collectPoints.end()-1)
 		{
 		  player1.incPoints();
 		  collectPoints.pop_back();
 		  collection_delay = 20;
 		  break;
-		  //continue;
 		}
 	      else
 		{
 		  player1.incPoints();
 		  collectPoints.erase(collect_it);
-		  //collectPoints.pop_back();
 		  collection_delay = 20;
 		  break;
 		}
-	      //collection_delay = 20;
 	    }
-	  //if (collection_delay > 0)
-	  //collection_delay -= 1;
 	}
       
       for (auto it = enemyList.begin(); it != enemyList.end(); it++)
@@ -784,11 +818,9 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	{
 	  for (auto it = turnPoints.begin(); it != turnPoints.end(); it++)
 	    {
-	      // <= 4
 	      if (abs(std::get<0>(*it).getPosition().x - enemy_it->getPos().x) <= 4 && abs(std::get<0>(*it).getPosition().y - enemy_it->getPos().y) <= 4 && enemy_it->getDirCounter() > 3 &&
 		  enemy_it->getVisibleFlag() == 0)
 		{
-		  // enemy_it->updatePoint(std::get<0>(*it));
 		  enemy_it->resetDirCounter();
 		  enemy_it->incCrossCount();
 		  std::vector<int> dirVector;
@@ -814,80 +846,29 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		  enemy_it->setDir(dirVector.at(randDir));
 		}
 
-	      // <= 4
 	      else if (abs(std::get<0>(*it).getPosition().x - enemy_it->getPos().x) <= 4 && abs(std::get<0>(*it).getPosition().y - enemy_it->getPos().y) <= 4 && enemy_it->getDirCounter() > 3 &&
 		       enemy_it->getVisibleFlag() == 1)
 		{
-		  //enemy_it->resetDirCounter();
-		  //enemy_it->incCrossCount();
-		  // enemy_it->updatePoint(std::get<0>(*it));
 		  if (enemy_it->getXCoordFlag() == 1)
 		    {
-		      //enemy_it->setDir(enemy_it->getNextDir());
-		      // <= 4
 		      if (abs(enemy_it->getLastPlayerCoord_x() - enemy_it->getPos().x) <= 15)
 			{
 			  enemy_it->setVisibleFlag(0);
 			  enemy_it->setXCoordFlag(0);
 			  enemy_it->setYCoordFlag(0);
-			  //break;
 			}
 		    }
 		  else if (enemy_it->getYCoordFlag() == 1)
 		    {
-		      //enemy_it->setDir(enemy_it->getNextDir());
-		      // <= 4
 		      if (abs(enemy_it->getLastPlayerCoord_y() - enemy_it->getPos().y) <= 15)
 			{
 			  enemy_it->setVisibleFlag(0);
 			  enemy_it->setXCoordFlag(0);
 			  enemy_it->setYCoordFlag(0);
-			  //break;
 			}
 		    }
-		  //if (enemy_it->getDirCounter() > 3)
-		  //{
-		  //enemy_it->resetDirCounter();
 		  enemy_it->setDir(enemy_it->getNextDir());
-		  //break;
-		      //}
 		}
-
-	      // else if (enemy_it->getVisibleFlag() == 1 && enemy_it->getDirCounter() > 3)
-	      // 	{
-	      // 	  //enemy_it->resetDirCounter();
-	      // 	  float right_dist = enemy_it->getPos().x - enemy_it->getPoint().getPosition().x;
-	      // 	  float left_dist = enemy_it->getPoint().getPosition().x - enemy_it->getPos().x;
-	      // 	  float up_dist = enemy_it->getPoint().getPosition().y - enemy_it->getPos().y;
-	      // 	  float down_dist = enemy_it->getPos().y - enemy_it->getPoint().getPosition().y;
-	      // 	  if (right_dist > left_dist && right_dist > up_dist && right_dist > down_dist && enemy1.getDir() == 2)
-	      // 	    {
-	      // 	      enemy_it->setDir(1);
-	      // 	    }
-	      // 	  else if (left_dist > right_dist && left_dist > up_dist && left_dist > down_dist && enemy1.getDir() == 1)
-	      // 	    {
-	      // 	      enemy_it->setDir(2);
-	      // 	    }
-	      // 	  else if (up_dist > right_dist && up_dist > left_dist && up_dist > down_dist && enemy1.getDir() == 3)
-	      // 	    {
-	      // 	      enemy_it->setDir(4);
-	      // 	    }
-	      // 	  else if (down_dist > left_dist && down_dist > right_dist && down_dist > up_dist && enemy1.getDir() == 4)
-	      // 	    {
-	      // 	      enemy_it->setDir(3);
-	      // 	    }
-	      // 	}
- 	      
-	      //else if (enemy_it->getDirCounter() > 3 && enemy_it->getVisibleFlag() == 1 && ((enemy_it->getDir() == 3 || enemy_it->getDir() == 4) &&
-	      //									    (enemy_it->getNextDir() == 3|| enemy_it->getNextDir() == 4)) &&
-	      //       ((enemy_it->getDir() == 1 || enemy_it->getDir() == 2) && (enemy_it->getNextDir() == 1 || enemy_it->getNextDir() == 2)))
-	      //{
-	      //  if (abs(enemy_it->getLastPlayerCoord_x() - enemy_it->getPos().x) <= 4 || abs(enemy_it->getLastPlayerCoord_y() - enemy_it->getPos().y) <= 4)
-	      //    {
-	      //      enemy_it->setVisibleFlag(0);
-	      //    }
-	      //  enemy_it->setDir(enemy_it->getNextDir());
-	      //}
 	    }
 	}
       if (setControl == "Right")
@@ -1102,6 +1083,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
 		      window.draw(exitButton);
 		      window.draw(pointsText);
 		      window.draw(livesText);
+		      window.draw(roundsText);
 		      window.display();
 		      if (pause == 1)
 			{
@@ -1150,6 +1132,7 @@ int Game(sf::RenderWindow &window, sf::Font font)
       window.draw(player1.getSprite());
       window.draw(pointsText);
       window.draw(livesText);
+      window.draw(roundsText);
       window.display();
     }
   return 0;
