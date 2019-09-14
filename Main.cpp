@@ -219,10 +219,6 @@ int Game(sf::RenderWindow &window, sf::Font font)
     {
       it->initLines();
       std::vector<std::tuple<int, sf::RectangleShape>> vec = it->getLines();
-      for (auto temp = vec.begin(); temp != vec.end(); temp++)
-	{
-	  window.draw(std::get<1>(*temp));
-	}
     }
   for (auto it = mapShapes.begin(); it != mapShapes.end(); it++)
   {
@@ -1073,10 +1069,6 @@ int Game(sf::RenderWindow &window, sf::Font font)
 			{
 			  window.draw(it->getSprite());
 			  std::vector<std::tuple<int, sf::RectangleShape>> vec = it->getLines();
-			  for (auto temp = vec.begin(); temp != vec.end(); temp++)
-			    {
-			      window.draw(std::get<1>(*temp));
-			    }
 			}
 		      window.draw(player1.getSprite());
 		      window.draw(menuButton);
@@ -1124,10 +1116,6 @@ int Game(sf::RenderWindow &window, sf::Font font)
 	  window.draw(it->getSprite());
 	  it->updateLines();
 	  std::vector<std::tuple<int, sf::RectangleShape>> vec = it->getLines();
-	  for (auto temp = vec.begin(); temp != vec.end(); temp++)
-	    {
-	      window.draw(std::get<1>(*temp));
-	    }
 	}
       window.draw(player1.getSprite());
       window.draw(pointsText);
