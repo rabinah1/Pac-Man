@@ -1945,4 +1945,5 @@ int gameOver(sf::RenderWindow &window, sf::Font font)
       window.draw(TitleText);
       window.display();
     }
+  return 1;
 }
