@@ -9,48 +9,38 @@ int minDistance(int dist[], bool sptSet[])
     int min = INT_MAX;
     int min_index = 0;
 
-    for (int v = 0; v < V; v++)
-	{
-	    if(sptSet[v] == false && dist[v] <= min)
-		{
-		    min = dist[v], min_index = v;
-		}
-	}
+    for (int v = 0; v < V; v++) {
+        if (sptSet[v] == false && dist[v] <= min)
+            min = dist[v], min_index = v;
+    }
     return min_index;
 }
 
 void printSolution(int dist[], int n)
 {
     printf("Vertex    Distance from Source\n");
-    for(int i = 0; i < V; i++)
-	{
-	    printf("%d                  %d\n", i, dist[i]);
-	}
+    for (int i = 0; i < V; i++)
+        printf("%d                  %d\n", i, dist[i]);
 }
 
 void dijkstra(int **graph, int src)
 {
     int dist[V];
     bool sptSet[V];
-    for(int i = 0; i < V; i++)
-	{
-	    dist[i] = INT_MAX, sptSet[i] = false;
-	}
+    for (int i = 0; i < V; i++)
+        dist[i] = INT_MAX, sptSet[i] = false;
     dist[src] = 0; // distance from src to src is 0.
   
-    for(int count = 0; count < V-1; count++) // why V-1?
-	{
-	    int u = minDistance(dist, sptSet);
-	    sptSet[u] = true;
-	    for(int v = 0; v < V; v++)
-		{
-		    if(sptSet[v] == false && graph[u][v] != 0 && dist[u] != INT_MAX && dist[u]+graph[u][v] < dist[v])
-			{
-			    dist[v] = dist[u] + graph[u][v];
-			    // Backtrace back to node u.
-			}
-		}
-	}
+    for (int count = 0; count < V-1; count++) { // why V-1?
+        int u = minDistance(dist, sptSet);
+        sptSet[u] = true;
+        for (int v = 0; v < V; v++) {
+            if (sptSet[v] == false && graph[u][v] != 0 && dist[u] != INT_MAX && dist[u]+graph[u][v] < dist[v]) {
+                dist[v] = dist[u] + graph[u][v];
+                // Backtrace back to node u.
+            }
+        }
+    }
     printSolution(dist, V);
 }
 
@@ -60,14 +50,11 @@ int **createAdjacency()
     int **Adj = 0;
     Adj = new int *[numVertices];
   
-    for (int i = 0; i < numVertices; i++)
-	{
-	    Adj[i] = new int [numVertices];
-	    for (int j = 0; j < numVertices; j++)
-		{
-		    Adj[i][j] = 0;
-		}
-	}
+    for (int i = 0; i < numVertices; i++) {
+        Adj[i] = new int [numVertices];
+        for (int j = 0; j < numVertices; j++)
+            Adj[i][j] = 0;
+    }
     Adj[0][1] = 1;
     Adj[0][6] = 1;
     Adj[1][0] = 1;
@@ -1898,52 +1885,43 @@ int gameOver(sf::RenderWindow &window, sf::Font font)
     MenuButton.setFillColor(sf::Color::Black);
     ExitButton.setFillColor(sf::Color::Black);
     TitleText.setFillColor(sf::Color::Red);
-    MenuButton.setPosition(window.getSize().x/2-MenuButton.getLocalBounds().width/2, window.getSize().y-MenuButton.getLocalBounds().height*5);
-    ExitButton.setPosition(window.getSize().x/2-ExitButton.getLocalBounds().width/2, window.getSize().y-ExitButton.getLocalBounds().height*2);
-    TitleText.setPosition(window.getSize().x/2-TitleText.getLocalBounds().width/2, window.getSize().y-TitleText.getLocalBounds().height*7);
+    MenuButton.setPosition(window.getSize().x/2-MenuButton.getLocalBounds().width/2,
+                           window.getSize().y-MenuButton.getLocalBounds().height*5);
+    ExitButton.setPosition(window.getSize().x/2-ExitButton.getLocalBounds().width/2,
+                           window.getSize().y-ExitButton.getLocalBounds().height*2);
+    TitleText.setPosition(window.getSize().x/2-TitleText.getLocalBounds().width/2,
+                          window.getSize().y-TitleText.getLocalBounds().height*7);
 
     window.setFramerateLimit(60);
 
-    while(window.isOpen())
-	{
-	    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-	    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-	    if (MenuButton.getGlobalBounds().contains(mousePosF))
-		{
-		    MenuButton.setFillColor(sf::Color::Blue);
-		}
-	    else if (ExitButton.getGlobalBounds().contains(mousePosF))
-		{
-		    ExitButton.setFillColor(sf::Color::Blue);
-		}
-	    else
-		{
-		    MenuButton.setFillColor(sf::Color::Black);
-		    ExitButton.setFillColor(sf::Color::Black);
-		}
-
-	    while (window.pollEvent(event))
-		{
-		    switch(event.type)
-			{
-			case sf::Event::MouseButtonPressed:
-			    if (MenuButton.getGlobalBounds().contains(mousePosF))
-				{
-				    return 0;
-				    break;
-				}
-			    else if (ExitButton.getGlobalBounds().contains(mousePosF))
-				{
-				    return 1;
-				    break;
-				}
-			}
-		}
-	    window.clear(sf::Color::White);
-	    window.draw(MenuButton);
-	    window.draw(ExitButton);
-	    window.draw(TitleText);
-	    window.display();
-	}
+    while (window.isOpen()) {
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+        if (MenuButton.getGlobalBounds().contains(mousePosF)) {
+            MenuButton.setFillColor(sf::Color::Blue);
+        } else if (ExitButton.getGlobalBounds().contains(mousePosF)) {
+            ExitButton.setFillColor(sf::Color::Blue);
+        } else {
+            MenuButton.setFillColor(sf::Color::Black);
+            ExitButton.setFillColor(sf::Color::Black);
+        }
+        while (window.pollEvent(event)) {
+            switch (event.type) {
+            case sf::Event::MouseButtonPressed:
+                if (MenuButton.getGlobalBounds().contains(mousePosF)) {
+                    return 0;
+                    break;
+                } else if (ExitButton.getGlobalBounds().contains(mousePosF)) {
+                    return 1;
+                    break;
+                }
+            }
+        }
+        window.clear(sf::Color::White);
+        window.draw(MenuButton);
+        window.draw(ExitButton);
+        window.draw(TitleText);
+        window.display();
+    }
     return 1;
 }

@@ -17,15 +17,6 @@ Enemy::Enemy(int st, sf::Sprite enemySp, sf::Texture eTexture, int stP, int Dir,
     last_player_coord_y = 0.0;
     x_coord_flag = 0;
     y_coord_flag = 0;
-    //prev_turn_point = NULL;
-    //line_right.setSize(sf::Vector2f(2000, 5));
-    //line_right.rotate(0);
-    //line_down.setSize(sf::Vector2f(2000, 5));
-    //line_down.rotate(90);
-    //line_left.setSize(sf::Vector2f(2000, 5));
-    //line_left.rotate(180);
-    //line_up.setSize(sf::Vector2f(2000, 5));
-    //line_up.rotate(270);
 }
 
 int Enemy::getXCoordFlag()
@@ -212,7 +203,6 @@ void Enemy::updateLines()
     line_up.setPosition(enemySprite.getPosition().x, enemySprite.getPosition().y);
 }
 
-//std::vector<sf::RectangleShape> Enemy::getLines()
 std::vector<std::tuple<int, sf::RectangleShape>> Enemy::getLines()
 {
     std::vector<std::tuple<int, sf::RectangleShape>> lines;
@@ -230,9 +220,5 @@ std::vector<std::tuple<int, sf::RectangleShape>> Enemy::getLines()
     lines.push_back(lineTuple2);
     lines.push_back(lineTuple3);
     lines.push_back(lineTuple4);
-    //lines.push_back(line_right);
-    //lines.push_back(line_down);
-    //lines.push_back(line_left);
-    //lines.push_back(line_up);
     return lines;
 }

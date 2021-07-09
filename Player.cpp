@@ -39,9 +39,7 @@ void Player::incPoints()
 void Player::changeTexture()
 {
     if (index == len)
-	{
-	    index = 0;
-	}
+        index = 0;
     playerSprite.setTexture(textureVec[index]);
     index += 1;
 }
